@@ -1,5 +1,7 @@
 import type { ContentBlock } from '../content/types'
 import { Icon } from '../shell/Icon'
+import { ClickableBubble } from './widgets/ClickableBubble'
+import { StepChecklist } from './widgets/StepChecklist'
 
 /** 基础内容块渲染器。M2 会扩充更多交互范式块。 */
 export function Blocks({ blocks }: { blocks?: ContentBlock[] }) {
@@ -87,6 +89,10 @@ function Block({ block }: { block: ContentBlock }) {
           <AnalogySide label="代码世界" text={block.codeSide} color="var(--cat-code)" />
         </div>
       )
+    case 'commands':
+      return <ClickableBubble intro={block.intro} items={block.items} />
+    case 'steps':
+      return <StepChecklist items={block.items} />
     case 'custom':
       return <>{block.node}</>
   }

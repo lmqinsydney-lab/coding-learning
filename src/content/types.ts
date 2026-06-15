@@ -26,6 +26,17 @@ export interface ContentModule {
   lenses: Lens[]
 }
 
+/** 可点击气泡的单条指令/API 条目 */
+export interface CommandItem {
+  cmd: string
+  /** 一句话讲解 */
+  desc: string
+  /** 设计师类比（可选） */
+  analogy?: string
+  /** 易错点（可选） */
+  pitfall?: string
+}
+
 export type ContentBlock =
   | { kind: 'p'; text: string }
   | { kind: 'h'; text: string }
@@ -33,6 +44,10 @@ export type ContentBlock =
   | { kind: 'code'; code: string; lang?: string }
   | { kind: 'callout'; tone?: 'info' | 'warn'; text: string }
   | { kind: 'analogy'; designSide: string; codeSide: string }
+  /** 可点击气泡：点指令弹讲解（指令交互速查的核心范式） */
+  | { kind: 'commands'; intro?: string; items: CommandItem[] }
+  /** 分步实操清单：可勾选 */
+  | { kind: 'steps'; items: string[] }
   | { kind: 'custom'; node: ReactNode }
 
 export interface Article {
