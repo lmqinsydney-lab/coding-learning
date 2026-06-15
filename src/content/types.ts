@@ -48,6 +48,8 @@ export type ContentBlock =
   | { kind: 'commands'; intro?: string; items: CommandItem[] }
   /** 分步实操清单：可勾选 */
   | { kind: 'steps'; items: string[] }
+  /** 图片（原文截图，本地化） */
+  | { kind: 'img'; src: string; alt?: string; caption?: string }
   | { kind: 'custom'; node: ReactNode }
 
 export interface Article {

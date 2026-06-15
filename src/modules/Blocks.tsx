@@ -93,6 +93,27 @@ function Block({ block }: { block: ContentBlock }) {
       return <ClickableBubble intro={block.intro} items={block.items} />
     case 'steps':
       return <StepChecklist items={block.items} />
+    case 'img':
+      return (
+        <figure style={{ margin: 0 }}>
+          <img
+            src={block.src}
+            alt={block.alt || ''}
+            loading="lazy"
+            style={{
+              display: 'block',
+              width: '100%',
+              borderRadius: 'var(--r-md)',
+              border: '0.5px solid var(--border)',
+            }}
+          />
+          {block.caption && (
+            <figcaption style={{ marginTop: 6, fontSize: 'var(--fs-xs)', color: 'var(--text-tertiary)' }}>
+              {block.caption}
+            </figcaption>
+          )}
+        </figure>
+      )
     case 'custom':
       return <>{block.node}</>
   }
