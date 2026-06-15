@@ -190,6 +190,17 @@ coding-learning/
 
 **扩充一篇 = 加一个文件夹 + 注册一行**，构建时打包进站点。该方式可支撑数十到上百篇策展文章，零运维。
 
+#### 7.2.1 图片存储规范（一期：仓库内 + WebP 压缩）
+
+- **必须在导入时本地化**：Cooper 图片 URL 自带会过期的 token，不能直接引用，导入时即下载到本地。
+- 图片随文章放 `articles/<id>/assets/`，统一压成 **WebP（限宽 1200、质量 80）**，单图通常几十 KB（实测 44.5MB→1.5MB，省 ~97%）。
+- 内容里用 `img` 数据块引用：`{ kind:'img', src, alt?, caption? }`；`src` 是 import 进来的本地路径。
+- **存储后端可换不改文章**：`img.src` 是字符串，二期换 CDN/OSS 只需批量替换 src，文章数据不动。
+- 工具脚本：
+  - `scripts/import-cooper.mjs <pageId> <slug>`：一键拉正文 + 下图 + 压 WebP + 落 assets + 输出 `_manifest.json`。
+  - `scripts/optimize-images.mjs <dir>`：压缩指定目录图片为 WebP。
+- 原文 markdown 落 `docs/source-articles/`（gitignored，含过期签名 URL，不入库）。
+
 **何时才需要数据库（= 二期触发条件）：**
 
 - 用户运行时自助上传/生成内容（构建后产生的内容无法进仓库）
