@@ -1,6 +1,7 @@
 import type { Article } from '../../types'
+import original from './original.md?raw'
 
-// 原文截图（已本地化，按原文顺序嵌入对应模块）
+// 原文截图（已本地化为 WebP）。原文 markdown 里用 asset:<file> 引用，经 assetMap 解析。
 import imgStages from './assets/nEX5VtTs0qqSLDJB.webp'
 import imgSso from './assets/jELQ1CE5tkjbfUxg.webp'
 import imgStorage1 from './assets/sq5K5y6fWEWotPPO.webp'
@@ -30,11 +31,44 @@ import imgCommitPush from './assets/4pXZz9sVYJ3pWPkY.webp'
 import imgCheckBranch from './assets/wMzGbQ4hCQ5HLRxp.webp'
 import imgDeployTip from './assets/wYsjAsnhzP9J9Xdp.webp'
 
+const assetMap: Record<string, string> = {
+  'nEX5VtTs0qqSLDJB.webp': imgStages,
+  'jELQ1CE5tkjbfUxg.webp': imgSso,
+  'sq5K5y6fWEWotPPO.webp': imgStorage1,
+  'vMeUgk2lTpRaNnD0.webp': imgStorage2,
+  'MLec2XMhgjP0nYyP.webp': imgUrl,
+  'JRLkxohAyMOLlcSf.webp': imgLoginFlow,
+  '0BxmtGKdwOnRzIIu.webp': imgUpmBadge,
+  'PNbN6lOR1MOlklOs.webp': imgApply,
+  'aIhg4SDyRVwZ0WxZ.webp': imgPerm,
+  'JU3ntOOrfDE3f8nm.webp': imgUpmManage,
+  'B9apSzJypyVREmon.webp': imgRoute1,
+  'UAkKW6m6BPtGDtN7.webp': imgRoute2,
+  'MkBv2BewsX9HFhwr.webp': imgPath,
+  '9E18tY2dzqdRlMg1.webp': imgEnvHidden,
+  'Alt468gXwgZbVp0p.webp': imgEnvExample,
+  'lC59eyoMJMkR3yJ8.webp': imgLocalRun,
+  'Tq9JWWeJ0gMfO6IP.webp': imgClaudeRun,
+  'ucoiDczS1HtwijRS.webp': imgLoginPage,
+  'ozDjO1iwIxcwHeSZ.webp': imgNet,
+  'xmLO75gpPPfBjost.webp': imgConsole,
+  'Pl6kg2MiGBNhLevX.webp': imgTwoTerm,
+  '1jBFU9ZxngwCrGaT.webp': imgNeedDb,
+  'y1IkR37SFhlQeRI9.webp': imgLocalJson,
+  'uLk3YaII1kcKa3jk.webp': imgGitConcept,
+  'jdTWwAt99gEuvNso.webp': imgSshKey,
+  '4pXZz9sVYJ3pWPkY.webp': imgCommitPush,
+  'wMzGbQ4hCQ5HLRxp.webp': imgCheckBranch,
+  'wYsjAsnhzP9J9Xdp.webp': imgDeployTip,
+}
+
 /**
  * 首发代码类文章，源自 Cooper：
  * 《代码：设计师如何把【秒创】从 IDEA 到项目落地》
- * 两层模型：5 个阶段(+简介/写在最后) 作内容模块，每个模块配解读视角。
- * 原文截图已本地化，按原文顺序嵌入各模块。
+ *
+ * 内容分工（按用户要求）：
+ * - bodyMarkdown = 原文，原封不动铺在总览页（含全部截图、代码、表格）。
+ * - contentModules = 提炼总结的辅助学习层（导读/概念图解/交互速查/避坑、类比卡、可点击气泡），不放原始截图。
  */
 export const miaochuang: Article = {
   id: 'miaochuang',
@@ -44,18 +78,8 @@ export const miaochuang: Article = {
     '一名设计师花 3 周，把一个 AI 生成的 HTML 文件，部署成多人协作的生产后台。这是一份设计师迈向工程化的实战攻略。',
   highlights: ['真实案例', 'URL 拆解', 'A/B 决策', '部署上线'],
 
-  body: [
-    { kind: 'p', text: '作为一名设计师，我花了 3 周，把一个 AI 生成的 HTML 文件，成功部署成了一个多人协作的生产后台。' },
-    { kind: 'h', text: '项目简介' },
-    {
-      kind: 'p',
-      text: '项目名为【秒创】，目的是帮运营同学在设计标准的框架下批量生成活动营销素材，节省视觉同学的成本。由产品+设计 @王伊乐 负责 V1.0 原型，设计+前端 @刘孟强 负责 AI 代码化落地与部署。',
-    },
-    { kind: 'h', text: '项目阶段' },
-    { kind: 'p', text: '整个项目经历 5 个阶段，每个阶段都是落地过程中不可或缺的一环。点上方任一阶段卡片，进入该阶段的结构化学习。' },
-    { kind: 'img', src: imgStages, alt: '项目 5 个阶段总览', caption: '项目 5 个阶段：体验层 → 功能层 → 验证层 → 发布层 → 数据层' },
-    { kind: 'p', text: '写在最后：工程能力的本质不是会写多少代码，而是能想清楚一个系统怎么运转——数据怎么流、权限怎么管、出错怎么定位。这些思考会反过来让你成为更好的设计师。AI 帮你扫盲，但路要自己走。' },
-  ],
+  bodyMarkdown: original,
+  assetMap,
 
   contentModules: [
     /* ---------- 0 项目简介 ---------- */
@@ -75,7 +99,7 @@ export const miaochuang: Article = {
               designSide: '把「设计规范 + 模板」交付给运营自助使用',
               codeSide: '把模板做成系统，运营在后台一键生成、导出',
             },
-            { kind: 'list', items: ['产品+设计 @王伊乐：V1.0 功能梳理 + 可点击原型', '设计+前端 @刘孟强：AI 代码化落地与部署'] },
+            { kind: 'p', text: '一句话看懂分工：产品+设计负责「想清楚要什么」，设计+前端负责「用 AI 把它做出来、部署上线」。' },
           ],
         },
       ],
@@ -93,7 +117,6 @@ export const miaochuang: Article = {
           title: '导读',
           blocks: [
             { kind: 'p', text: '这一步相当于传统设计流程里的「产品 → 设计」：让 AI 反复确认你的真实意图与产品核心，结合 skill 输出一份 PRD，再据此生成初版 UI。' },
-            { kind: 'p', text: '因为不需要太多业务背景，输入时讲清楚背景、角色、核心功能即可。目的是让 AI 理清产品核心，方便后续产出开发文档和接口文档。' },
           ],
         },
         {
@@ -122,7 +145,7 @@ export const miaochuang: Article = {
       ],
     },
 
-    /* ---------- 2 功能层（最丰富） ---------- */
+    /* ---------- 2 功能层 ---------- */
     {
       id: 'auth',
       title: '功能层 · 登录与鉴权',
@@ -151,11 +174,6 @@ export const miaochuang: Article = {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
-            { kind: 'p', text: '【一】先学 SSO（单点登录）基础：把脱敏后的公司 SSO 文档丢给 AI，让它用大白话讲一遍这条链路。' },
-            { kind: 'img', src: imgSso, alt: 'SSO 基础知识', caption: '学习 SSO 相关基础知识' },
-            { kind: 'p', text: '过程中你会顺带搞懂：什么是接口、接口怎么运作、cookie / session / localStorage 的区别。' },
-            { kind: 'img', src: imgStorage1, alt: '数据存储方式对比 1' },
-            { kind: 'img', src: imgStorage2, alt: 'cookie / session / localStorage 区别' },
             { kind: 'p', text: '登录调用链：用户点登录 → 跳到 SSO → 回调你的服务 → 你拿到用户身份。先看懂一个登录地址的结构（点下面每一段看含义）：' },
             {
               kind: 'commands',
@@ -168,32 +186,16 @@ export const miaochuang: Article = {
                 { cmd: 'app_id', desc: '应用 ID，标识「是哪个系统在请求登录」。', analogy: '你这个系统的工牌号。' },
               ],
             },
-            { kind: 'img', src: imgUrl, alt: '登录 URL 结构分析' },
-            { kind: 'p', text: '一般后台登录流程：访问后台 → 带 app_id 去 SSO 登录 → 登录成功拿着「工牌」回后台。' },
-            { kind: 'img', src: imgLoginFlow, alt: '登录流程图', caption: '后台登录的完整流程' },
           ],
         },
         {
           type: 'reference',
           title: '指令交互速查',
           blocks: [
-            { kind: 'p', text: '【二】接入 UPM（用户权限管理）会拿到 app_id 和 app_key，相当于秒创系统的「工牌」，公司系统靠它认识你。' },
-            { kind: 'img', src: imgUpmBadge, alt: 'app_id / app_key 工牌' },
-            { kind: 'p', text: '到 BPM 按字段填写申请：子系统名称、回调地址（一般结尾加 /auth/callback）、主页地址、管理员账号、所属环境等。' },
-            { kind: 'img', src: imgApply, alt: 'app 申请表单' },
-            { kind: 'img', src: imgPerm, alt: '开放权限申请' },
-            { kind: 'p', text: '【三】申请通过后邮件会给你 app_id / app_key，可登录 UPM 后台查看修改。' },
-            { kind: 'img', src: imgUpmManage, alt: 'UPM 后台管理 app' },
-            { kind: 'p', text: '【四】SSO 路由部署：告诉 AI 你和后端的配合方式，先在本地跑通一次公司内网登录；建一个全英文路径存放代码。' },
-            { kind: 'img', src: imgRoute1, alt: 'SSO 路由部署 1' },
-            { kind: 'img', src: imgRoute2, alt: 'SSO 路由部署 2' },
-            { kind: 'img', src: imgPath, alt: '代码存放路径' },
-            { kind: 'p', text: '【五】修改 .env 配置文件（默认隐藏，Command+Shift+. 显示）。核对 5 个值：' },
-            { kind: 'img', src: imgEnvHidden, alt: '.env 配置文件' },
-            { kind: 'img', src: imgEnvExample, alt: '.env 示例' },
+            { kind: 'p', text: '接入 UPM（用户权限管理）会拿到 app_id 和 app_key，相当于秒创系统的「工牌」。下面是这一阶段常用的命令：' },
             {
               kind: 'commands',
-              intro: '常用到的命令（点开看说明与类比）：',
+              intro: '点开看说明与类比：',
               items: [
                 { cmd: 'openssl rand -base64 32', desc: '生成 SESSION_SECRET（会话密钥），填进 .env。', analogy: '给系统配一把随机的「保险箱钥匙」。' },
                 { cmd: 'claude', desc: '在 IDE 终端里启动 Claude，直接说「帮我在本地运行服务」即可跑通。', analogy: '把跑服务交给会写代码的搭子。' },
@@ -201,11 +203,6 @@ export const miaochuang: Article = {
                 { cmd: 'cd banner', desc: '进入某个文件夹（这里进 banner 目录）。', analogy: '双击进入一个文件夹。' },
               ],
             },
-            { kind: 'p', text: '【六】SSO 能力本地调通：让 AI「帮我在本地运行服务」，看到「✅ 服务已成功启动」即跑通。' },
-            { kind: 'img', src: imgLocalRun, alt: 'SSO 本地调通' },
-            { kind: 'img', src: imgClaudeRun, alt: 'Claude 本地运行服务' },
-            { kind: 'p', text: '浏览器打开 http://localhost:8000，就能看到公司内网的登录界面。' },
-            { kind: 'img', src: imgLoginPage, alt: '公司内网登录界面' },
             {
               kind: 'steps',
               items: [
@@ -224,10 +221,7 @@ export const miaochuang: Article = {
             { kind: 'callout', tone: 'warn', text: 'app_key 绝不要发给任何人或 AI，否则平台可能被任何人入侵！' },
             { kind: 'callout', tone: 'warn', text: '内网登录时不要开 VPN，只连公司内网才行。' },
             { kind: 'callout', tone: 'warn', text: '代码存放路径最好全英文，不要出现中文。' },
-            { kind: 'p', text: '【附加篇】用 AI 调试 bug：无痕模式清缓存，F12 重点看「网络」和「控制台」，把截图+完整报错给 AI。' },
-            { kind: 'img', src: imgNet, alt: '网络面板调试' },
-            { kind: 'img', src: imgConsole, alt: '控制台报错' },
-            { kind: 'img', src: imgTwoTerm, alt: '同时开两个终端调试' },
+            { kind: 'callout', tone: 'info', text: '调试三板斧：无痕模式清缓存、F12 看「网络」「控制台」、把截图+完整报错一起给 AI。' },
           ],
         },
       ],
@@ -262,22 +256,6 @@ export const miaochuang: Article = {
             },
             { kind: 'p', text: '怎么判断要不要数据库？看四个信号：' },
             { kind: 'steps', items: ['时间性：数据要长期保留吗', '共享性：需要多人共享吗', '可信性：需要可追溯吗', '复杂性：是复合信息（文字+图片+配置）吗'] },
-            { kind: 'img', src: imgNeedDb, alt: '判断是否需要数据库' },
-          ],
-        },
-        {
-          type: 'reference',
-          title: '指令交互速查',
-          blocks: [
-            { kind: 'p', text: '本地阶段用 JSON 文件当「本地数据库」：让 AI 按接口生成各种 JSON 存储文件，就能本地调试验证。' },
-            { kind: 'img', src: imgLocalJson, alt: '本地 JSON 存储' },
-            {
-              kind: 'commands',
-              items: [
-                { cmd: 'cat data/categories.json | python3 -m json.tool | head -40', desc: '在终端直接查看某个 JSON 文件的实况，验证数据有没有被正确写入。', analogy: '像直接打开「本地数据库」看一眼内容。' },
-              ],
-            },
-            { kind: 'callout', tone: 'info', text: '验证数据是否写入有两招：① 让 AI 在日志里多打几行；② 终端直接 cat 出 JSON 文件。' },
           ],
         },
         {
@@ -302,16 +280,13 @@ export const miaochuang: Article = {
           title: '导读',
           blocks: [
             { kind: 'p', text: '本地跑通后，要把代码部署到服务器，别人才能通过一个 IP 地址访问你的系统。学一点基本的 git 概念，有助于看懂 AI 在干嘛。' },
-            { kind: 'img', src: imgGitConcept, alt: 'git 基本指令与概念' },
           ],
         },
         {
           type: 'reference',
           title: '指令交互速查',
           blocks: [
-            { kind: 'p', text: '用 GitLab 管理代码：先找后端开通仓库权限，并配置 ssh_key。' },
-            { kind: 'img', src: imgSshKey, alt: '配置 ssh_key' },
-            { kind: 'p', text: '下面是常用 git 动作——你甚至可以直接用大白话让 AI 执行：' },
+            { kind: 'p', text: '用 GitLab 管理代码（先找后端开通仓库权限、配置 ssh_key）。下面是常用 git 动作——你甚至可以直接用大白话让 AI 执行：' },
             {
               kind: 'commands',
               items: [
@@ -322,7 +297,6 @@ export const miaochuang: Article = {
                 { cmd: 'commit & push', desc: '「我本地更新了代码，帮我 commit and push」。', analogy: '给当前版本存档并上传到云端。' },
               ],
             },
-            { kind: 'img', src: imgCommitPush, alt: 'commit & push 到远程' },
             { kind: 'p', text: '部署：OE 平台用来搭流水线，找后端建好后，你只需执行「编译」和「部署」两步，成功后去看预发环境 IP 能否打开。' },
           ],
         },
@@ -331,9 +305,7 @@ export const miaochuang: Article = {
           title: '避坑',
           blocks: [
             { kind: 'callout', tone: 'info', text: '推上去后检查三点：分支、上传时间、操作编码（commit）。' },
-            { kind: 'img', src: imgCheckBranch, alt: '检查分支/时间/commit' },
             { kind: 'callout', tone: 'warn', text: '部署/重启服务器前，一定提醒大家不要在编辑数据——重启会保存不了别人的数据！' },
-            { kind: 'img', src: imgDeployTip, alt: '部署提醒' },
           ],
         },
       ],

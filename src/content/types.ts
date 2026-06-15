@@ -59,8 +59,12 @@ export interface Article {
   summary: string
   /** 交互亮点标签，显示在目录卡片上 */
   highlights?: string[]
-  /** 原文，铺在总览页大纲下方 */
-  body: ContentBlock[]
+  /** 原文（铺在总览页大纲下方）。两种写法二选一： */
+  body?: ContentBlock[]
+  /** 原文的 markdown 原文（原封不动），优先于 body 渲染 */
+  bodyMarkdown?: string
+  /** markdown 里 asset:<file> 的解析表：文件名 → 打包后的 URL */
+  assetMap?: Record<string, string>
   contentModules: ContentModule[]
 }
 

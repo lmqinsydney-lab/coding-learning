@@ -2,6 +2,7 @@ import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { getArticle } from '../content/registry'
 import { CATEGORY_LABEL } from '../content/types'
 import { Blocks } from '../modules/Blocks'
+import { Markdown } from '../modules/Markdown'
 import { ModuleDrawer } from './ModuleDrawer'
 import { Icon } from './Icon'
 
@@ -64,7 +65,11 @@ export function ArticlePage() {
         <Icon name="file-text" size={14} /> 原文
       </div>
       <article className="origin-body">
-        <Blocks blocks={article.body} />
+        {article.bodyMarkdown ? (
+          <Markdown content={article.bodyMarkdown} assetMap={article.assetMap} />
+        ) : (
+          <Blocks blocks={article.body} />
+        )}
       </article>
 
       <ModuleDrawer article={article} activeId={activeId} onClose={closeDrawer} onNavigate={openModule} />
