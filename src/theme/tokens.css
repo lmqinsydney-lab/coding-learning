@@ -1,0 +1,49 @@
+:root {
+  /* Backgrounds (dark Linear vibe) */
+  --bg-page: #0d0d12;
+  --bg-elevated: #14131c;
+  --bg-elevated-2: #1a1826;
+  --bg-overlay: rgba(8, 8, 12, 0.55);
+
+  /* Text */
+  --text-primary: #e8e8ee;
+  --text-secondary: #9a9aa8;
+  --text-tertiary: #6a6a78;
+
+  /* Accents */
+  --accent: #6d5dfc; /* purple */
+  --accent-soft: rgba(124, 109, 252, 0.14);
+  --accent-text: #b3a6ff;
+  --cat-code: #6d5dfc; /* 代码类 */
+  --cat-ai: #5fd0a8; /* AI 学习类 */
+  --warn: #f0a04b; /* 避坑/警示 */
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(124, 109, 252, 0.45);
+
+  /* Radius */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-pill: 20px;
+
+  /* Type scale (locked): 24 / 18 / 16 / 14 / 12 / 11 / 10 */
+  --fs-h1: 24px;
+  --fs-h2: 18px;
+  --fs-h3: 16px;
+  --fs-body: 14px;
+  --fs-sm: 12px;
+  --fs-xs: 11px;
+  --fs-2xs: 10px;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas,
+    monospace;
+
+  /* Layout */
+  --maxw: 1120px;
+  --drawer-w: 560px;
+}

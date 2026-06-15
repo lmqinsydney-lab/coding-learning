@@ -1,0 +1,76 @@
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { articles } from '../content/registry'
+import { CATEGORY_LABEL, type Category } from '../content/types'
+import { HeroBackground } from './HeroBackground'
+import { Icon } from './Icon'
+
+type Filter = 'all' | Category
+
+const FILTERS: { key: Filter; label: string; icon?: string }[] = [
+  { key: 'all', label: '全部' },
+  { key: 'code', label: '代码类', icon: 'code' },
+  { key: 'ai', label: 'AI 学习类', icon: 'sparkles' },
+]
+
+export function CatalogPage() {
+  const [filter, setFilter] = useState<Filter>('all')
+  const list = useMemo(
+    () => (filter === 'all' ? articles : articles.filter((a) => a.category === filter)),
+    [filter],
+  )
+
+  return (
+    <div>
+      <section className="hero">
+        <HeroBackground />
+        <div className="hero-inner">
+          <h1 className="hero-title">把代码与 AI，拆成设计师看得懂的样子</h1>
+          <p className="hero-sub">每篇文章 = 一张可点击的信息图</p>
+          <button className="hero-cta" onClick={() => alert('上传 / 粘贴链接：敬请期待（二期）')}>
+            <Icon name="upload" size={15} /> 上传文章 / 粘贴链接
+          </button>
+        </div>
+      </section>
+
+      <div className="filters">
+        {FILTERS.map((f) => (
+          <button
+            key={f.key}
+            className={`chip ${filter === f.key ? 'chip-on' : ''}`}
+            onClick={() => setFilter(f.key)}
+          >
+            {f.icon && <Icon name={f.icon} size={13} />} {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="card-grid">
+        {list.map((a) => (
+          <Link to={`/article/${a.id}`} key={a.id} className={`card cat-${a.category}`}>
+            <div className="card-cat">
+              <Icon name={a.category === 'code' ? 'code' : 'sparkles'} size={12} />{' '}
+              {CATEGORY_LABEL[a.category]}
+            </div>
+            <div className="card-title">{a.title}</div>
+            <div className="card-summary">{a.summary}</div>
+            <div className="card-meta">
+              <span className="card-count">
+                <Icon name="layout-grid" size={12} /> {a.contentModules.length} 个内容模块
+              </span>
+            </div>
+            {a.highlights?.length ? (
+              <div className="card-tags">
+                {a.highlights.map((h) => (
+                  <span className="tag" key={h}>
+                    {h}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
