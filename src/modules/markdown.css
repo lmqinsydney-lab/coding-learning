@@ -56,9 +56,12 @@
   margin: 0.9em 0;
   padding: 2px 14px;
   border-left: 2px solid var(--border-accent);
-  color: var(--text-secondary);
+  color: #ffffff;
   background: var(--accent-soft);
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.md blockquote p {
+  color: #ffffff;
 }
 .md code {
   font-family: var(--font-mono);
@@ -91,10 +94,12 @@
   font-size: var(--fs-sm);
   display: block;
   overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--r-sm);
 }
 .md th,
 .md td {
-  border: 0.5px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   padding: 8px 10px;
   text-align: left;
   vertical-align: top;
