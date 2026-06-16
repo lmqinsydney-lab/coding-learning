@@ -216,7 +216,7 @@
 }
 .article-bar {
   position: sticky;
-  top: 53px; /* 紧贴在全局顶栏下方 */
+  top: 52px; /* 顶栏实高 52.5px，取 52 轻微重叠以消除缝隙 */
   z-index: 15;
   display: flex;
   align-items: center;
