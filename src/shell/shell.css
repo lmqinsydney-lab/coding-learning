@@ -278,6 +278,21 @@
   inset: 0;
   pointer-events: none;
 }
+.flow-dash {
+  stroke-dasharray: 5 12;
+  animation: flow 1.4s linear infinite;
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -17;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-dash {
+    animation: none;
+    stroke-opacity: 0.25;
+  }
+}
 
 /* shared card */
 .module-card {

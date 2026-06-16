@@ -10,14 +10,15 @@ const DEFAULT_MOTIFS: TechMotif[] = [
 
 const CARD_W = 224
 const CARD_H = 132
-const RADIUS_X = 322
-const RADIUS_Y = 238
-const CANVAS_W = CARD_W + RADIUS_X * 2 + 8 // 900
-const CANVAS_H = CARD_H + RADIUS_Y * 2 + 8 // 640
+const HALF_W = CARD_W / 2
+const HALF_H = CARD_H / 2
+const RADIUS_X = 340
+const RADIUS_Y = 240
+const PAD = 24
 
 function useContainerWidth() {
   const ref = useRef<HTMLDivElement>(null)
-  const [w, setW] = useState(CANVAS_W)
+  const [w, setW] = useState(960)
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -54,6 +55,25 @@ export function ModuleGraph({
   )
 }
 
+type Pt = { x: number; y: number }
+
+function connectorPath(c: Pt, p: Pt) {
+  const dx = p.x - c.x
+  const dy = p.y - c.y
+  const sx = Math.sign(dx) || 1
+  const sy = Math.sign(dy) || 1
+  if (Math.abs(dx) >= Math.abs(dy)) {
+    const start = { x: c.x + sx * HALF_W, y: c.y }
+    const end = { x: p.x - sx * HALF_W, y: p.y }
+    const mx = (end.x - start.x) * 0.5
+    return { d: `M${start.x},${start.y} C${start.x + mx},${start.y} ${end.x - mx},${end.y} ${end.x},${end.y}`, end }
+  }
+  const start = { x: c.x, y: c.y + sy * HALF_H }
+  const end = { x: p.x, y: p.y - sy * HALF_H }
+  const my = (end.y - start.y) * 0.5
+  return { d: `M${start.x},${start.y} C${start.x},${start.y + my} ${end.x},${end.y - my} ${end.x},${end.y}`, end }
+}
+
 function Radial({
   sorted,
   onOpen,
@@ -63,53 +83,69 @@ function Radial({
   onOpen: (id: string) => void
   width: number
 }) {
-  const scale = Math.min(1, width / CANVAS_W)
-  const center = sorted[0]
   const ring = sorted.slice(1)
-  const cx = CANVAS_W / 2
-  const cy = CANVAS_H / 2
+  const n = ring.length
 
-  const pts = ring.map((_, i) => {
-    const ang = (-90 + i * (360 / ring.length)) * (Math.PI / 180)
-    return { x: cx + RADIUS_X * Math.cos(ang), y: cy + RADIUS_Y * Math.sin(ang) }
+  // 相对中心(0,0)布点 + 错落
+  const raw: Pt[] = ring.map((_, i) => {
+    const baseAng = -90 + i * (360 / Math.max(n, 1))
+    const angOff = i % 2 === 0 ? -5 : 5
+    const ang = ((baseAng + angOff) * Math.PI) / 180
+    const rxF = i % 2 === 0 ? 0.96 : 1.08
+    const ryF = i % 2 === 0 ? 1.08 : 0.95
+    return { x: RADIUS_X * rxF * Math.cos(ang), y: RADIUS_Y * ryF * Math.sin(ang) }
   })
+
+  // 计算范围（含卡片半尺寸与中心），归一化到画布
+  const all = [{ x: 0, y: 0 }, ...raw]
+  const minX = Math.min(...all.map((p) => p.x)) - HALF_W
+  const maxX = Math.max(...all.map((p) => p.x)) + HALF_W
+  const minY = Math.min(...all.map((p) => p.y)) - HALF_H
+  const maxY = Math.max(...all.map((p) => p.y)) + HALF_H
+  const canvasW = maxX - minX + PAD * 2
+  const canvasH = maxY - minY + PAD * 2
+  const ox = -minX + PAD
+  const oy = -minY + PAD
+
+  const center = { x: ox, y: oy }
+  const pts = raw.map((p) => ({ x: p.x + ox, y: p.y + oy }))
+  const conns = pts.map((p) => connectorPath(center, p))
+  const scale = Math.min(1, width / canvasW)
 
   return (
     <div
       className="graph-radial"
-      style={{ width: CANVAS_W, height: CANVAS_H, transform: `scale(${scale})`, marginBottom: (scale - 1) * CANVAS_H }}
+      style={{
+        width: canvasW,
+        height: canvasH,
+        transform: `scale(${scale})`,
+        marginBottom: (scale - 1) * canvasH,
+      }}
     >
-      <svg className="graph-lines" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} width={CANVAS_W} height={CANVAS_H}>
+      <svg className="graph-lines" viewBox={`0 0 ${canvasW} ${canvasH}`} width={canvasW} height={canvasH}>
         <defs>
-          <filter id="mg-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+          <filter id="mg-glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" />
           </filter>
         </defs>
-        <g filter="url(#mg-glow)">
-          {pts.map((p, i) => (
-            <line
-              key={i}
-              x1={cx}
-              y1={cy}
-              x2={p.x}
-              y2={p.y}
-              stroke={i % 2 === 0 ? PURPLE : TEAL}
-              strokeOpacity="0.5"
-              strokeWidth="2"
-            />
-          ))}
-        </g>
-        {pts.map((p, i) => (
-          <circle key={i} cx={p.x} cy={p.y} r="3" fill={i % 2 === 0 ? PURPLE : TEAL} />
+        {conns.map((c, i) => {
+          const col = i % 2 === 0 ? PURPLE : TEAL
+          return (
+            <g key={i}>
+              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.3" strokeWidth="6" filter="url(#mg-glow)" />
+              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.85" strokeWidth="1.6" strokeLinecap="round" />
+              <path d={c.d} className="flow-dash" fill="none" stroke="#ffffff" strokeOpacity="0.55" strokeWidth="1.4" strokeLinecap="round" />
+            </g>
+          )
+        })}
+        {conns.map((c, i) => (
+          <circle key={`e${i}`} cx={c.end.x} cy={c.end.y} r="3.2" fill={i % 2 === 0 ? PURPLE : TEAL} />
         ))}
-        <circle cx={cx} cy={cy} r="4" fill={PURPLE} />
+        <circle cx={center.x} cy={center.y} r="4.5" fill={PURPLE} filter="url(#mg-glow)" />
+        <circle cx={center.x} cy={center.y} r="3" fill={PURPLE} />
       </svg>
 
-      <PositionedCard mod={center} index={0} accent={PURPLE} highlight x={cx} y={cy} onOpen={onOpen} />
+      <PositionedCard mod={sorted[0]} index={0} accent={PURPLE} highlight x={center.x} y={center.y} onOpen={onOpen} />
       {ring.map((m, i) => (
         <PositionedCard
           key={m.id}
@@ -143,7 +179,7 @@ function PositionedCard({
   onOpen: (id: string) => void
 }) {
   return (
-    <div style={{ position: 'absolute', left: x - CARD_W / 2, top: y - CARD_H / 2, width: CARD_W }}>
+    <div style={{ position: 'absolute', left: x - HALF_W, top: y - HALF_H, width: CARD_W }}>
       <ModuleCard mod={mod} index={index} accent={accent} highlight={highlight} onOpen={onOpen} />
     </div>
   )
