@@ -7,25 +7,25 @@ import type { TechMotif } from '../content/types'
 export function TechGlyph({ motif, accent = '#6d5dfc' }: { motif: TechMotif; accent?: string }) {
   const gid = `g-${motif}-${accent.replace('#', '')}`
   return (
-    <svg viewBox="0 0 224 64" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%', display: 'block' }}>
+    <svg viewBox="0 0 224 112" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%', display: 'block' }}>
       <defs>
         <linearGradient id={`${gid}-bg`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={accent} stopOpacity="0.14" />
+          <stop offset="0" stopColor={accent} stopOpacity="0.16" />
           <stop offset="1" stopColor="#0d0d12" stopOpacity="0" />
         </linearGradient>
-        <pattern id={`${gid}-grid`} width="16" height="16" patternUnits="userSpaceOnUse">
-          <path d="M16 0H0V16" fill="none" stroke={accent} strokeOpacity="0.16" strokeWidth="1" />
+        <pattern id={`${gid}-grid`} width="18" height="18" patternUnits="userSpaceOnUse">
+          <path d="M18 0H0V18" fill="none" stroke={accent} strokeOpacity="0.16" strokeWidth="1" />
         </pattern>
         <radialGradient id={`${gid}-glow`} cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor={accent} stopOpacity="0.45" />
+          <stop offset="0" stopColor={accent} stopOpacity="0.5" />
           <stop offset="1" stopColor={accent} stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="224" height="64" fill="#0d0d12" />
-      <rect width="224" height="64" fill={`url(#${gid}-bg)`} />
-      <rect width="224" height="64" fill={`url(#${gid}-grid)`} />
-      <ellipse cx="112" cy="32" rx="46" ry="30" fill={`url(#${gid}-glow)`} />
-      <g transform="translate(112 32)" stroke={accent} fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="224" height="112" fill="#0d0d12" />
+      <rect width="224" height="112" fill={`url(#${gid}-bg)`} />
+      <rect width="224" height="112" fill={`url(#${gid}-grid)`} />
+      <ellipse cx="112" cy="56" rx="58" ry="42" fill={`url(#${gid}-glow)`} />
+      <g transform="translate(112 56) scale(1.25)" stroke={accent} fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
         <Motif motif={motif} accent={accent} />
       </g>
     </svg>

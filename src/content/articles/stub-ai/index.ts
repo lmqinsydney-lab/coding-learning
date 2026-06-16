@@ -15,6 +15,7 @@ export const stubAi: Article = {
     {
       id: 'prompt-anatomy',
       title: '一条好提示词的结构',
+      shortTitle: '提示词结构',
       order: 1,
       brief: '角色 / 上下文 / 约束 / 示例',
       motif: 'api',

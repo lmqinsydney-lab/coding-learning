@@ -109,6 +109,7 @@ export const miaochuang: Article = {
     {
       id: 'prototype',
       title: '体验层 · 手搓 HTML 原型',
+      shortTitle: '体验层 · 原型',
       order: 2,
       brief: '一个可操作的 index.html',
       lenses: [
@@ -149,6 +150,7 @@ export const miaochuang: Article = {
     {
       id: 'auth',
       title: '功能层 · 登录与鉴权',
+      shortTitle: '功能层 · 鉴权',
       order: 3,
       brief: '先知道「是谁在用」',
       lenses: [
@@ -231,6 +233,7 @@ export const miaochuang: Article = {
     {
       id: 'local-data',
       title: '验证层 · 数据本地化存储',
+      shortTitle: '验证层 · 本地存储',
       order: 4,
       brief: '从孤岛到公共记忆',
       lenses: [
@@ -272,6 +275,7 @@ export const miaochuang: Article = {
     {
       id: 'deploy',
       title: '发布层 · 部署到服务器',
+      shortTitle: '发布层 · 部署',
       order: 5,
       brief: '让别人能通过 IP 访问',
       lenses: [
@@ -315,6 +319,7 @@ export const miaochuang: Article = {
     {
       id: 'backend',
       title: '数据层 · 联动后端，闭环上线',
+      shortTitle: '数据层 · 后端',
       order: 6,
       brief: '中间层双模式',
       lenses: [

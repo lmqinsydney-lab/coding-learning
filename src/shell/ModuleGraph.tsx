@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ContentModule, TechMotif } from '../content/types'
 import { TechGlyph } from '../modules/TechGlyph'
 
@@ -8,17 +8,17 @@ const DEFAULT_MOTIFS: TechMotif[] = [
   'grid', 'prototype', 'auth', 'storage', 'deploy', 'backend', 'finish', 'cube', 'terminal', 'api', 'branch',
 ]
 
-const CARD_W = 224
-const CARD_H = 132
-const HALF_W = CARD_W / 2
-const HALF_H = CARD_H / 2
-const RADIUS_X = 340
-const RADIUS_Y = 240
-const PAD = 24
+const RADIUS_X = 420
+const RADIUS_Y = 166
+const PAD = 14
+const MAX_SCALE = 0.9
+
+type Size = { w: number; h: number }
+type Pt = { x: number; y: number }
 
 function useContainerWidth() {
   const ref = useRef<HTMLDivElement>(null)
-  const [w, setW] = useState(960)
+  const [w, setW] = useState(980)
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -31,6 +31,13 @@ function useContainerWidth() {
 
 function motifOf(m: ContentModule, i: number): TechMotif {
   return m.motif ?? DEFAULT_MOTIFS[i % DEFAULT_MOTIFS.length]
+}
+
+/** 首屏估算尺寸（测量前用），减少跳动 */
+function estimate(m: ContentModule): Size {
+  const t = Math.max((m.shortTitle ?? m.title).length, m.brief?.length ?? 0)
+  const w = Math.min(360, Math.max(190, t * 15 + 28 + 40))
+  return { w, h: 140 }
 }
 
 export function ModuleGraph({
@@ -55,9 +62,7 @@ export function ModuleGraph({
   )
 }
 
-type Pt = { x: number; y: number }
-
-/** 把正交折线渲染成带圆角的 SVG path */
+/** 正交折线圆角化 */
 function roundedPath(points: Pt[], r = 14): string {
   if (points.length < 2) return ''
   let d = `M${points[0].x},${points[0].y}`
@@ -72,14 +77,10 @@ function roundedPath(points: Pt[], r = 14): string {
       d += ` L${cur.x},${cur.y}`
       continue
     }
-    const v1x = (cur.x - prev.x) / (len1 || 1)
-    const v1y = (cur.y - prev.y) / (len1 || 1)
-    const v2x = (next.x - cur.x) / (len2 || 1)
-    const v2y = (next.y - cur.y) / (len2 || 1)
-    const bx = cur.x - v1x * rr
-    const by = cur.y - v1y * rr
-    const ax = cur.x + v2x * rr
-    const ay = cur.y + v2y * rr
+    const bx = cur.x - ((cur.x - prev.x) / (len1 || 1)) * rr
+    const by = cur.y - ((cur.y - prev.y) / (len1 || 1)) * rr
+    const ax = cur.x + ((next.x - cur.x) / (len2 || 1)) * rr
+    const ay = cur.y + ((next.y - cur.y) / (len2 || 1)) * rr
     d += ` L${bx},${by} Q${cur.x},${cur.y} ${ax},${ay}`
   }
   const last = points[points.length - 1]
@@ -87,8 +88,8 @@ function roundedPath(points: Pt[], r = 14): string {
   return d
 }
 
-/** 正交（水平/垂直）走线：水平出→垂直→水平入（或反之），拐直角圆角弯 */
-function connectorPath(c: Pt, p: Pt) {
+/** 正交走线（水平/垂直），按各卡实际半尺寸吸附边缘 */
+function connectorPath(c: Pt, p: Pt, cH: Size, pH: Size) {
   const dx = p.x - c.x
   const dy = p.y - c.y
   const sx = Math.sign(dx) || 1
@@ -96,13 +97,13 @@ function connectorPath(c: Pt, p: Pt) {
   let points: Pt[]
   let end: Pt
   if (Math.abs(dx) >= Math.abs(dy)) {
-    const start = { x: c.x + sx * HALF_W, y: c.y }
-    end = { x: p.x - sx * HALF_W, y: p.y }
+    const start = { x: c.x + sx * (cH.w / 2), y: c.y }
+    end = { x: p.x - sx * (pH.w / 2), y: p.y }
     const midX = start.x + (end.x - start.x) / 2
     points = [start, { x: midX, y: start.y }, { x: midX, y: end.y }, end]
   } else {
-    const start = { x: c.x, y: c.y + sy * HALF_H }
-    end = { x: p.x, y: p.y - sy * HALF_H }
+    const start = { x: c.x, y: c.y + sy * (cH.h / 2) }
+    end = { x: p.x, y: p.y - sy * (pH.h / 2) }
     const midY = start.y + (end.y - start.y) / 2
     points = [start, { x: start.x, y: midY }, { x: end.x, y: midY }, end]
   }
@@ -118,12 +119,47 @@ function Radial({
   onOpen: (id: string) => void
   width: number
 }) {
+  const center = sorted[0]
   const ring = sorted.slice(1)
   const n = ring.length
 
-  // 相对中心(0,0)布点 + 错落
-  const raw: Pt[] = ring.map((_, i) => {
+  const refs = useRef<Map<string, HTMLDivElement>>(new Map())
+  const [sizes, setSizes] = useState<Record<string, Size>>({})
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const next: Record<string, Size> = {}
+      refs.current.forEach((el, id) => {
+        if (el) next[id] = { w: el.offsetWidth, h: el.offsetHeight }
+      })
+      setSizes(next)
+    }
+    const ro = new ResizeObserver(measure)
+    refs.current.forEach((el) => el && ro.observe(el))
+    measure()
+    let cancelled = false
+    // 等 Oswald 字体加载完再量一次（序号宽度会变）
+    if (document.fonts?.ready) document.fonts.ready.then(() => !cancelled && measure())
+    return () => {
+      cancelled = true
+      ro.disconnect()
+    }
+  }, [sorted])
+
+  const sizeOf = (m: ContentModule): Size => sizes[m.id] ?? estimate(m)
+
+  // 正上/正下方的节点（与中心同轴）→ 对齐中心 x，连线走直线
+  const isVertical = (i: number) => {
+    const a = (((-90 + i * (360 / Math.max(n, 1))) % 360) + 360) % 360
+    return a === 90 || a === 270
+  }
+
+  // 相对中心(0,0)布点 + 错落（垂直轴节点对齐中心，不错落）
+  const ringPts: Pt[] = ring.map((_, i) => {
     const baseAng = -90 + i * (360 / Math.max(n, 1))
+    if (isVertical(i)) {
+      return { x: 0, y: RADIUS_Y * 1.08 * Math.sign(Math.sin((baseAng * Math.PI) / 180)) }
+    }
     const angOff = i % 2 === 0 ? -5 : 5
     const ang = ((baseAng + angOff) * Math.PI) / 180
     const rxF = i % 2 === 0 ? 0.96 : 1.08
@@ -131,21 +167,25 @@ function Radial({
     return { x: RADIUS_X * rxF * Math.cos(ang), y: RADIUS_Y * ryF * Math.sin(ang) }
   })
 
-  // 计算范围（含卡片半尺寸与中心），归一化到画布
-  const all = [{ x: 0, y: 0 }, ...raw]
-  const minX = Math.min(...all.map((p) => p.x)) - HALF_W
-  const maxX = Math.max(...all.map((p) => p.x)) + HALF_W
-  const minY = Math.min(...all.map((p) => p.y)) - HALF_H
-  const maxY = Math.max(...all.map((p) => p.y)) + HALF_H
+  const nodes = [{ m: center, pt: { x: 0, y: 0 } }, ...ring.map((m, i) => ({ m, pt: ringPts[i] }))]
+  const minX = Math.min(...nodes.map((nd) => nd.pt.x - sizeOf(nd.m).w / 2))
+  const maxX = Math.max(...nodes.map((nd) => nd.pt.x + sizeOf(nd.m).w / 2))
+  const minY = Math.min(...nodes.map((nd) => nd.pt.y - sizeOf(nd.m).h / 2))
+  const maxY = Math.max(...nodes.map((nd) => nd.pt.y + sizeOf(nd.m).h / 2))
   const canvasW = maxX - minX + PAD * 2
   const canvasH = maxY - minY + PAD * 2
   const ox = -minX + PAD
   const oy = -minY + PAD
 
-  const center = { x: ox, y: oy }
-  const pts = raw.map((p) => ({ x: p.x + ox, y: p.y + oy }))
-  const conns = pts.map((p) => connectorPath(center, p))
-  const scale = Math.min(1, width / canvasW)
+  const centerPt = { x: ox, y: oy }
+  const placed = ring.map((_, i) => ({ x: ringPts[i].x + ox, y: ringPts[i].y + oy }))
+  const conns = ring.map((m, i) => connectorPath(centerPt, placed[i], sizeOf(center), sizeOf(m)))
+  const scale = Math.min(MAX_SCALE, width / canvasW)
+
+  const setRef = (id: string) => (el: HTMLDivElement | null) => {
+    if (el) refs.current.set(id, el)
+    else refs.current.delete(id)
+  }
 
   return (
     <div
@@ -162,60 +202,60 @@ function Radial({
           <filter id="mg-glow" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="4" />
           </filter>
+          <radialGradient id="syn-p" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stopColor={PURPLE} stopOpacity="0.95" />
+            <stop offset="0.4" stopColor={PURPLE} stopOpacity="0.5" />
+            <stop offset="1" stopColor={PURPLE} stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="syn-t" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stopColor={TEAL} stopOpacity="0.95" />
+            <stop offset="0.4" stopColor={TEAL} stopOpacity="0.5" />
+            <stop offset="1" stopColor={TEAL} stopOpacity="0" />
+          </radialGradient>
         </defs>
         {conns.map((c, i) => {
           const col = i % 2 === 0 ? PURPLE : TEAL
           return (
             <g key={i}>
-              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.3" strokeWidth="6" filter="url(#mg-glow)" />
-              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.85" strokeWidth="1.6" strokeLinecap="round" />
-              <path d={c.d} className="flow-dash" fill="none" stroke="#ffffff" strokeOpacity="0.55" strokeWidth="1.4" strokeLinecap="round" />
+              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.28" strokeWidth="6" filter="url(#mg-glow)" />
+              <path d={c.d} fill="none" stroke={col} strokeOpacity="0.8" strokeWidth="1.6" strokeLinecap="round" />
+              <path
+                d={c.d}
+                className="flow-pulse"
+                pathLength={1}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                style={{ animationDelay: `${i * 0.5}s` }}
+              />
             </g>
           )
         })}
+        {/* 突触：连接处发光节点（颜色融洽） */}
         {conns.map((c, i) => (
-          <circle key={`e${i}`} cx={c.end.x} cy={c.end.y} r="3.2" fill={i % 2 === 0 ? PURPLE : TEAL} />
+          <g key={`s${i}`}>
+            <circle cx={c.end.x} cy={c.end.y} r="9" fill={i % 2 === 0 ? 'url(#syn-p)' : 'url(#syn-t)'} />
+            <circle cx={c.end.x} cy={c.end.y} r="2.6" fill="#fff" fillOpacity="0.9" />
+          </g>
         ))}
-        <circle cx={center.x} cy={center.y} r="4.5" fill={PURPLE} filter="url(#mg-glow)" />
-        <circle cx={center.x} cy={center.y} r="3" fill={PURPLE} />
+        <circle cx={centerPt.x} cy={centerPt.y} r="11" fill="url(#syn-p)" />
+        <circle cx={centerPt.x} cy={centerPt.y} r="3" fill="#fff" fillOpacity="0.9" />
       </svg>
 
-      <PositionedCard mod={sorted[0]} index={0} accent={PURPLE} highlight x={center.x} y={center.y} onOpen={onOpen} />
+      <div ref={setRef(center.id)} className="graph-node" style={{ left: centerPt.x - sizeOf(center).w / 2, top: centerPt.y - sizeOf(center).h / 2 }}>
+        <ModuleCard mod={center} index={0} accent={PURPLE} highlight onOpen={onOpen} />
+      </div>
       {ring.map((m, i) => (
-        <PositionedCard
+        <div
           key={m.id}
-          mod={m}
-          index={i + 1}
-          accent={i % 2 === 0 ? PURPLE : TEAL}
-          x={pts[i].x}
-          y={pts[i].y}
-          onOpen={onOpen}
-        />
+          ref={setRef(m.id)}
+          className="graph-node"
+          style={{ left: placed[i].x - sizeOf(m).w / 2, top: placed[i].y - sizeOf(m).h / 2 }}
+        >
+          <ModuleCard mod={m} index={i + 1} accent={i % 2 === 0 ? PURPLE : TEAL} onOpen={onOpen} />
+        </div>
       ))}
-    </div>
-  )
-}
-
-function PositionedCard({
-  mod,
-  index,
-  accent,
-  highlight,
-  x,
-  y,
-  onOpen,
-}: {
-  mod: ContentModule
-  index: number
-  accent: string
-  highlight?: boolean
-  x: number
-  y: number
-  onOpen: (id: string) => void
-}) {
-  return (
-    <div style={{ position: 'absolute', left: x - HALF_W, top: y - HALF_H, width: CARD_W }}>
-      <ModuleCard mod={mod} index={index} accent={accent} highlight={highlight} onOpen={onOpen} />
     </div>
   )
 }
@@ -246,21 +286,18 @@ function ModuleCard({
   onOpen: (id: string) => void
 }) {
   return (
-    <button
-      className={`module-card ${highlight ? 'module-card-hl' : ''}`}
-      onClick={() => onOpen(mod.id)}
-      style={highlight ? { borderColor: accent } : undefined}
-    >
+    <button className={`module-card ${highlight ? 'module-card-hl' : ''}`} onClick={() => onOpen(mod.id)}>
       <div className="mc-glyph">
         <TechGlyph motif={motifOf(mod, index)} accent={accent} />
       </div>
       <div className="mc-body">
         <span className="mc-no" style={{ color: accent }}>
           {String(mod.order).padStart(2, '0')}
-          {highlight ? ' · 起点' : ''}
         </span>
-        <span className="mc-title">{mod.title}</span>
-        {mod.brief && <span className="mc-brief">{mod.brief}</span>}
+        <div className="mc-text">
+          <span className="mc-title">{mod.shortTitle ?? mod.title}</span>
+          {mod.brief && <span className="mc-brief">{mod.brief}</span>}
+        </div>
       </div>
     </button>
   )

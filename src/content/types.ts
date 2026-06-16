@@ -33,7 +33,10 @@ export type TechMotif =
 /** 第一层：内容模块，来自文章最高层级标题 */
 export interface ContentModule {
   id: string
+  /** 完整标题：抽屉详情、上下页等处显示 */
   title: string
+  /** 精简标题：仅卡片上显示；不填则用 title */
+  shortTitle?: string
   order: number
   /** 一句话概述，显示在总览大纲卡片上 */
   brief?: string
