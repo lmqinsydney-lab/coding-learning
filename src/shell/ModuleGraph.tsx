@@ -57,21 +57,56 @@ export function ModuleGraph({
 
 type Pt = { x: number; y: number }
 
+/** 把正交折线渲染成带圆角的 SVG path */
+function roundedPath(points: Pt[], r = 14): string {
+  if (points.length < 2) return ''
+  let d = `M${points[0].x},${points[0].y}`
+  for (let i = 1; i < points.length - 1; i++) {
+    const prev = points[i - 1]
+    const cur = points[i]
+    const next = points[i + 1]
+    const len1 = Math.hypot(cur.x - prev.x, cur.y - prev.y)
+    const len2 = Math.hypot(next.x - cur.x, next.y - cur.y)
+    const rr = Math.min(r, len1 / 2, len2 / 2)
+    if (rr < 0.5) {
+      d += ` L${cur.x},${cur.y}`
+      continue
+    }
+    const v1x = (cur.x - prev.x) / (len1 || 1)
+    const v1y = (cur.y - prev.y) / (len1 || 1)
+    const v2x = (next.x - cur.x) / (len2 || 1)
+    const v2y = (next.y - cur.y) / (len2 || 1)
+    const bx = cur.x - v1x * rr
+    const by = cur.y - v1y * rr
+    const ax = cur.x + v2x * rr
+    const ay = cur.y + v2y * rr
+    d += ` L${bx},${by} Q${cur.x},${cur.y} ${ax},${ay}`
+  }
+  const last = points[points.length - 1]
+  d += ` L${last.x},${last.y}`
+  return d
+}
+
+/** 正交（水平/垂直）走线：水平出→垂直→水平入（或反之），拐直角圆角弯 */
 function connectorPath(c: Pt, p: Pt) {
   const dx = p.x - c.x
   const dy = p.y - c.y
   const sx = Math.sign(dx) || 1
   const sy = Math.sign(dy) || 1
+  let points: Pt[]
+  let end: Pt
   if (Math.abs(dx) >= Math.abs(dy)) {
     const start = { x: c.x + sx * HALF_W, y: c.y }
-    const end = { x: p.x - sx * HALF_W, y: p.y }
-    const mx = (end.x - start.x) * 0.5
-    return { d: `M${start.x},${start.y} C${start.x + mx},${start.y} ${end.x - mx},${end.y} ${end.x},${end.y}`, end }
+    end = { x: p.x - sx * HALF_W, y: p.y }
+    const midX = start.x + (end.x - start.x) / 2
+    points = [start, { x: midX, y: start.y }, { x: midX, y: end.y }, end]
+  } else {
+    const start = { x: c.x, y: c.y + sy * HALF_H }
+    end = { x: p.x, y: p.y - sy * HALF_H }
+    const midY = start.y + (end.y - start.y) / 2
+    points = [start, { x: start.x, y: midY }, { x: end.x, y: midY }, end]
   }
-  const start = { x: c.x, y: c.y + sy * HALF_H }
-  const end = { x: p.x, y: p.y - sy * HALF_H }
-  const my = (end.y - start.y) * 0.5
-  return { d: `M${start.x},${start.y} C${start.x},${start.y + my} ${end.x},${end.y - my} ${end.x},${end.y}`, end }
+  return { d: roundedPath(points), end }
 }
 
 function Radial({
