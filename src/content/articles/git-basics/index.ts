@@ -17,6 +17,7 @@ export const gitBasics: Article = {
       title: '什么是版本控制',
       order: 1,
       brief: '为什么需要、解决什么问题',
+      motif: 'cube',
       lenses: [
         {
           type: 'intro',
@@ -42,6 +43,7 @@ export const gitBasics: Article = {
       title: '日常基础操作',
       order: 2,
       brief: 'add / commit / push 的日常循环',
+      motif: 'terminal',
       lenses: [
         {
           type: 'concept',
@@ -78,6 +80,7 @@ export const gitBasics: Article = {
       title: '分支管理',
       order: 3,
       brief: '并行开发不打架',
+      motif: 'branch',
       lenses: [
         {
           type: 'intro',

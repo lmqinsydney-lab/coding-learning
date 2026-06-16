@@ -17,6 +17,7 @@ export const stubAi: Article = {
       title: '一条好提示词的结构',
       order: 1,
       brief: '角色 / 上下文 / 约束 / 示例',
+      motif: 'api',
       lenses: [
         {
           type: 'concept',
@@ -32,6 +33,7 @@ export const stubAi: Article = {
       title: '常见误区',
       order: 2,
       brief: '别让模型猜',
+      motif: 'auth',
       lenses: [
         {
           type: 'pitfall',

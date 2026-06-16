@@ -262,49 +262,102 @@
   color: var(--text-secondary);
   margin: 26px 0 12px;
 }
-.outline-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+/* ---------- Module graph (radial) ---------- */
+.module-graph-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-@media (max-width: 640px) {
-  .outline-grid {
-    grid-template-columns: 1fr;
-  }
+.graph-radial {
+  position: relative;
+  transform-origin: top center;
+  flex-shrink: 0;
 }
-.outline-card {
+.graph-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* shared card */
+.module-card {
   display: flex;
   flex-direction: column;
   text-align: left;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
   background: var(--bg-elevated);
   border: 0.5px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 16px;
+  border-radius: var(--r-lg);
   color: var(--text-primary);
-  transition: border-color 0.18s, transform 0.18s;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
 }
-.outline-card:hover {
+.module-card:hover {
   border-color: var(--border-accent);
   transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(124, 109, 252, 0.18);
 }
-.outline-no {
+.module-card-hl {
+  border-width: 2px;
+}
+.mc-glyph {
+  height: 58px;
+  width: 100%;
+}
+.mc-body {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px 12px;
+}
+.mc-no {
   font-size: var(--fs-xs);
-  color: var(--accent-text);
 }
-.outline-title {
+.mc-title {
   font-size: var(--fs-h3);
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 3px;
+  line-height: 1.3;
 }
-.outline-brief {
+.mc-brief {
   font-size: var(--fs-sm);
   color: var(--text-secondary);
-  margin-top: 4px;
+  margin-top: 3px;
 }
-.outline-lenses {
-  font-size: var(--fs-xs);
-  color: var(--text-tertiary);
-  margin-top: 10px;
+
+/* mobile fallback: vertical list with connecting line */
+.graph-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding-left: 8px;
+}
+.graph-list::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: linear-gradient(var(--accent), rgba(124, 109, 252, 0.2));
+}
+.graph-list-item {
+  position: relative;
+  padding-left: 22px;
+}
+.graph-list-item::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg-page);
+  border: 2px solid var(--accent);
 }
 .origin-body {
   background: var(--bg-elevated);

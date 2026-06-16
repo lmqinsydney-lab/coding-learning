@@ -16,6 +16,20 @@ export interface Lens {
   custom?: ReactNode
 }
 
+/** 模块卡片的「科技图」主题（程序化 SVG 生成） */
+export type TechMotif =
+  | 'grid'
+  | 'prototype'
+  | 'auth'
+  | 'storage'
+  | 'deploy'
+  | 'backend'
+  | 'finish'
+  | 'cube'
+  | 'terminal'
+  | 'api'
+  | 'branch'
+
 /** 第一层：内容模块，来自文章最高层级标题 */
 export interface ContentModule {
   id: string
@@ -23,6 +37,8 @@ export interface ContentModule {
   order: number
   /** 一句话概述，显示在总览大纲卡片上 */
   brief?: string
+  /** 科技图主题；不填则按序号自动分配 */
+  motif?: TechMotif
   lenses: Lens[]
 }
 

@@ -4,6 +4,7 @@ import { getArticle } from '../content/registry'
 import { CATEGORY_LABEL } from '../content/types'
 import { Blocks } from '../modules/Blocks'
 import { Markdown } from '../modules/Markdown'
+import { ModuleGraph } from './ModuleGraph'
 import { ModuleDrawer } from './ModuleDrawer'
 import { Icon } from './Icon'
 
@@ -40,24 +41,11 @@ export function ArticlePage() {
         <p style={{ color: 'var(--text-secondary)', marginTop: 6 }}>{article.summary}</p>
       </div>
 
-      {/* 第一层：内容模块大纲（信息图总览） */}
+      {/* 第一层：内容模块信息图（中心辐射） */}
       <div className="outline-label">
         <Icon name="layout-grid" size={14} /> 内容模块 · 点击进入学习
       </div>
-      <div className="outline-grid">
-        {[...article.contentModules]
-          .sort((a, b) => a.order - b.order)
-          .map((m) => (
-            <button key={m.id} className="outline-card" onClick={() => openModule(m.id)}>
-              <span className="outline-no">{String(m.order).padStart(2, '0')}</span>
-              <span className="outline-title">{m.title}</span>
-              {m.brief && <span className="outline-brief">{m.brief}</span>}
-              <span className="outline-lenses">
-                {m.lenses.map((l) => l.title).join(' · ')}
-              </span>
-            </button>
-          ))}
-      </div>
+      <ModuleGraph modules={article.contentModules} onOpen={openModule} />
 
       {/* 原文铺底 */}
       <div className="origin-label">
