@@ -212,7 +212,20 @@
 
 /* ---------- Article page ---------- */
 .article-wrap {
-  padding-top: 26px;
+  padding-top: 0;
+}
+.article-bar {
+  position: sticky;
+  top: 53px; /* 紧贴在全局顶栏下方 */
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 -28px;
+  padding: 11px 28px;
+  background: rgba(13, 13, 18, 0.78);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border);
 }
 .back-link {
   display: inline-flex;
@@ -220,12 +233,25 @@
   gap: 6px;
   font-size: var(--fs-sm);
   color: var(--text-secondary);
+  flex-shrink: 0;
 }
 .back-link:hover {
   color: var(--text-primary);
 }
+.bar-sep {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.bar-title {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .article-head {
-  margin: 16px 0 28px;
+  margin: 24px 0 28px;
 }
 .outline-label,
 .origin-label {

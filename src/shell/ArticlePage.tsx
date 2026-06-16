@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { getArticle } from '../content/registry'
 import { CATEGORY_LABEL } from '../content/types'
@@ -28,16 +29,14 @@ export function ArticlePage() {
 
   return (
     <div className="article-wrap">
-      <Link to="/" className="back-link">
-        <Icon name="arrow-left" size={14} /> 目录
-      </Link>
+      <StickyBar title={article.title} />
 
       <div className="article-head">
         <span className={`card-cat cat-${article.category}`}>
           <Icon name={article.category === 'code' ? 'code' : 'sparkles'} size={12} />{' '}
           {CATEGORY_LABEL[article.category]}
         </span>
-        <h1 style={{ marginTop: 10 }}>{article.title}</h1>
+        <h1 id="article-title">{article.title}</h1>
         <p style={{ color: 'var(--text-secondary)', marginTop: 6 }}>{article.summary}</p>
       </div>
 
@@ -73,6 +72,35 @@ export function ArticlePage() {
       </article>
 
       <ModuleDrawer article={article} activeId={activeId} onClose={closeDrawer} onNavigate={openModule} />
+    </div>
+  )
+}
+
+/** 贴顶二级栏：「目录」始终在；文章大标题滑出视口后，自动在「目录」后补上标题。 */
+function StickyBar({ title }: { title: string }) {
+  const [showTitle, setShowTitle] = useState(false)
+  useEffect(() => {
+    const el = document.getElementById('article-title')
+    if (!el) return
+    const ob = new IntersectionObserver(([e]) => setShowTitle(!e.isIntersecting), {
+      rootMargin: '-56px 0px 0px 0px',
+      threshold: 0,
+    })
+    ob.observe(el)
+    return () => ob.disconnect()
+  }, [title])
+
+  return (
+    <div className="article-bar">
+      <Link to="/" className="back-link">
+        <Icon name="arrow-left" size={14} /> 目录
+      </Link>
+      {showTitle && (
+        <>
+          <span className="bar-sep">/</span>
+          <span className="bar-title">{title}</span>
+        </>
+      )}
     </div>
   )
 }
