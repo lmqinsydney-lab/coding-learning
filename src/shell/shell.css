@@ -62,7 +62,11 @@
 .hero {
   position: relative;
   margin: 0 -28px 8px;
-  padding: 72px 28px 60px;
+  padding: 48px 28px;
+  min-height: clamp(440px, 68vh, 760px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   text-align: center;
 }
