@@ -263,59 +263,82 @@
   margin: 26px 0 12px;
 }
 /* ---------- Module graph (radial) ---------- */
-.module-graph-wrap {
+/* ---------- 内容模块 · coverflow 轮播 ---------- */
+.carousel-wrap {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 4px 0;
 }
-.graph-radial {
+.carousel {
   position: relative;
-  transform-origin: top center;
-  flex-shrink: 0;
+  width: 100%;
+  height: 248px;
+  perspective: 1600px;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
 }
-.graph-lines {
+.carousel-stage {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  transform-style: preserve-3d;
 }
-/* 单段亮点：定时从一端飞快划到另一端 */
-.flow-pulse {
-  stroke-dasharray: 0.16 1;
-  stroke-dashoffset: 0.16;
-  animation: flow-pulse 3.4s ease-in infinite;
-}
-@keyframes flow-pulse {
-  0% {
-    stroke-dashoffset: 0.16;
-    opacity: 0;
-  }
-  3% {
-    opacity: 1;
-  }
-  22% {
-    stroke-dashoffset: -1;
-    opacity: 1;
-  }
-  24%,
-  100% {
-    stroke-dashoffset: -1;
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .flow-pulse {
-    animation: none;
-    opacity: 0;
-  }
-}
-
-/* radial node wrapper (auto width, measured for layout) */
-.graph-node {
+.carousel-item {
   position: absolute;
-  width: max-content;
+  top: 50%;
+  left: 50%;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  will-change: transform, opacity;
 }
-
+.carousel {
+  cursor: pointer;
+}
+.carousel-item .module-card {
+  width: 100%;
+}
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: var(--text-secondary);
+  background: rgba(20, 19, 28, 0.7);
+  border: 0.5px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+.carousel-arrow:hover {
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+.carousel-prev {
+  left: 10px;
+}
+.carousel-next {
+  right: 10px;
+}
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+.carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.2s, width 0.2s;
+}
+.carousel-dot.on {
+  width: 20px;
+  border-radius: 4px;
+  background: var(--accent);
+}
 /* shared card */
 .module-card {
   display: flex;
@@ -343,18 +366,6 @@
     linear-gradient(var(--bg-elevated), var(--bg-elevated)) padding-box,
     linear-gradient(150deg, rgba(124, 109, 252, 0.7), rgba(124, 109, 252, 0.16) 45%, rgba(124, 109, 252, 0.05) 70%) border-box;
   box-shadow: 0 0 30px rgba(124, 109, 252, 0.16);
-}
-.graph-node .module-card {
-  width: max-content;
-  min-width: 188px;
-}
-.module-card:hover {
-  border-color: var(--border-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(124, 109, 252, 0.18);
-}
-.module-card-hl {
-  border-width: 2px;
 }
 .mc-glyph {
   height: 72px;
@@ -399,40 +410,6 @@
   white-space: nowrap;
 }
 
-/* mobile fallback: vertical list with connecting line */
-.graph-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  max-width: 420px;
-  padding-left: 8px;
-}
-.graph-list::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 24px;
-  bottom: 24px;
-  width: 2px;
-  background: linear-gradient(var(--accent), rgba(124, 109, 252, 0.2));
-}
-.graph-list-item {
-  position: relative;
-  padding-left: 22px;
-}
-.graph-list-item::before {
-  content: '';
-  position: absolute;
-  left: 1px;
-  top: 28px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--bg-page);
-  border: 2px solid var(--accent);
-}
 .origin-body {
   background: var(--bg-elevated);
   border: 0.5px solid var(--border);
