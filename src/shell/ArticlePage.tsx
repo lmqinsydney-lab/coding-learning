@@ -41,9 +41,9 @@ export function ArticlePage() {
         <p style={{ color: 'var(--text-secondary)', marginTop: 6 }}>{article.summary}</p>
       </div>
 
-      {/* 第一层：内容模块信息图（中心辐射） */}
+      {/* 第一层：内容模块 coverflow */}
       <div className="outline-label">
-        <Icon name="layout-grid" size={14} /> 内容模块 · 点击进入学习
+        <Icon name="layout-grid" size={14} /> 快速学习
       </div>
       <ModuleGraph modules={article.contentModules} onOpen={openModule} />
 

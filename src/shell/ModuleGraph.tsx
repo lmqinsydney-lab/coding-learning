@@ -70,7 +70,7 @@ export function ModuleGraph({
     else if (dx < -45) go(1)
   }
 
-  const cardW = Math.round(Math.min(300, Math.max(212, width * 0.4)))
+  const cardW = Math.round(Math.min(272, Math.max(200, width * 0.36)))
   const step = cardW * 0.6
 
   const styleFor = (i: number) => {
