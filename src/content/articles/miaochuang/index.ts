@@ -31,6 +31,15 @@ import imgCommitPush from './assets/4pXZz9sVYJ3pWPkY.webp'
 import imgCheckBranch from './assets/wMzGbQ4hCQ5HLRxp.webp'
 import imgDeployTip from './assets/wYsjAsnhzP9J9Xdp.webp'
 
+// 导读信息总结图（速创 GPT-Image-2 生成、本地化）
+import summaryIntro from './assets/summary-intro.webp'
+import summaryPrototype from './assets/summary-prototype.webp'
+import summaryAuth from './assets/summary-auth.webp'
+import summaryLocalData from './assets/summary-local-data.webp'
+import summaryDeploy from './assets/summary-deploy.webp'
+import summaryBackend from './assets/summary-backend.webp'
+import summaryClosing from './assets/summary-closing.webp'
+
 const assetMap: Record<string, string> = {
   'nEX5VtTs0qqSLDJB.webp': imgStages,
   'jELQ1CE5tkjbfUxg.webp': imgSso,
@@ -93,6 +102,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryIntro, alt: '项目简介信息总结图' },
             { kind: 'p', text: '【秒创】是一个营销素材批量生成后台：让运营在设计定好的模板框架内快速产出，省下视觉同学反复出图的成本。' },
             {
               kind: 'analogy',
@@ -117,6 +127,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryPrototype, alt: '体验层信息总结图' },
             { kind: 'p', text: '这一步相当于传统设计流程里的「产品 → 设计」：让 AI 反复确认你的真实意图与产品核心，结合 skill 输出一份 PRD，再据此生成初版 UI。' },
           ],
         },
@@ -158,6 +169,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryAuth, alt: '功能层信息总结图' },
             { kind: 'p', text: '工具想给团队用，第一步是知道「是谁登录的」，才能判断这个用户进入什么界面、能操作什么功能。' },
             { kind: 'p', text: '解决登录有两条路，作者做了一次关键的 A/B 决策：' },
             {
@@ -241,6 +253,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryLocalData, alt: '验证层信息总结图' },
             { kind: 'p', text: '登录跑通后，工具还是「自己用」。要让团队共享数据，必须有一个所有人都能访问的「公共记忆」。' },
           ],
         },
@@ -283,6 +296,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryDeploy, alt: '发布层信息总结图' },
             { kind: 'p', text: '本地跑通后，要把代码部署到服务器，别人才能通过一个 IP 地址访问你的系统。学一点基本的 git 概念，有助于看懂 AI 在干嘛。' },
           ],
         },
@@ -327,6 +341,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryBackend, alt: '数据层信息总结图' },
             { kind: 'p', text: '后端同事加入，Java 后端接管真实数据库。你之前写的 Node 服务不下线，而是变成「中间层」。' },
           ],
         },
@@ -366,6 +381,7 @@ export const miaochuang: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryClosing, alt: '写在最后信息总结图' },
             { kind: 'p', text: 'AI 不是把设计师变成工程师，而是让设计师不再被「我不会」挡住自己。' },
             { kind: 'p', text: '工程能力的本质不是会写多少代码，而是能想清楚一个完整系统怎么运转：数据怎么流、权限怎么管、出错怎么定位、改一处会不会影响别处。这些思考会反过来让你成为更好的设计师。' },
             { kind: 'callout', tone: 'info', text: '走出去就有路。AI 帮你扫盲，但路要自己走。' },

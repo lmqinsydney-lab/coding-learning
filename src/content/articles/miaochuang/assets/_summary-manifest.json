@@ -1,0 +1,9 @@
+{
+  "intro": "summary-intro.webp",
+  "prototype": "summary-prototype.webp",
+  "auth": "summary-auth.webp",
+  "local-data": "summary-local-data.webp",
+  "deploy": "summary-deploy.webp",
+  "backend": "summary-backend.webp",
+  "closing": "summary-closing.webp"
+}
