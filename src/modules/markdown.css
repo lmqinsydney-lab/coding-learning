@@ -108,6 +108,12 @@
   background: var(--bg-elevated-2);
   font-weight: 500;
 }
+/* 表格内的截图：给固定可视宽度，避免被多列挤成微缩图（表格可横向滚动） */
+.md td img {
+  width: 200px;
+  max-width: none;
+  margin: 4px 0;
+}
 .md hr {
   border: none;
   border-top: 0.5px solid var(--border);
