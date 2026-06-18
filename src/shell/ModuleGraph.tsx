@@ -71,7 +71,9 @@ export function ModuleGraph({
   }
 
   const cardW = Math.round(Math.min(272, Math.max(200, width * 0.36)))
-  const step = cardW * 0.6
+  const step1 = cardW * 0.74 // ±1 卡：露出更多
+  const step2 = cardW * 0.32 // ±2 卡：只在 ±1 之外露一点
+  const step = step1 // 点击横坐标→步数 的映射基准
 
   const styleFor = (i: number) => {
     let off = i - active
@@ -79,18 +81,26 @@ export function ModuleGraph({
     if (off < -n / 2) off += n
     const abs = Math.abs(off)
     const sign = Math.sign(off)
-    const far = abs >= 3
-    const tx = far ? sign * step * 2.2 : off * step + sign * (abs === 2 ? step * 0.5 : 0)
-    const tz = abs === 0 ? 0 : abs === 1 ? -170 : abs === 2 ? -330 : -440
-    const ry = off === 0 ? 0 : -sign * (abs === 1 ? 40 : 46)
-    const scale = abs === 0 ? 1 : abs === 1 ? 0.88 : 0.76
-    const opacity = far ? 0 : abs === 2 ? 0.5 : 1
+    if (abs >= 3) {
+      return {
+        width: cardW,
+        transform: `translate(-50%, -50%) translateX(${sign * (step1 + step2 * 1.5)}px) translateZ(-460px) scale(0.68)`,
+        opacity: 0,
+        zIndex: 100 - abs,
+        pointerEvents: 'none' as const,
+      }
+    }
+    const tx = abs === 0 ? 0 : abs === 1 ? sign * step1 : sign * (step1 + step2)
+    const tz = abs === 0 ? 0 : abs === 1 ? -150 : -350
+    const ry = off === 0 ? 0 : -sign * (abs === 1 ? 36 : 50)
+    const scale = abs === 0 ? 1 : abs === 1 ? 0.9 : 0.72
+    const opacity = abs === 0 ? 1 : abs === 1 ? 1 : 0.38
     return {
       width: cardW,
       transform: `translate(-50%, -50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`,
       opacity,
       zIndex: 100 - abs,
-      pointerEvents: far ? ('none' as const) : ('auto' as const),
+      pointerEvents: 'auto' as const,
     }
   }
 
