@@ -193,13 +193,13 @@ function ModuleCard({
         <TechGlyph motif={motifOf(mod, index)} accent={accent} />
       </div>
       <div className="mc-body">
-        <span className="mc-no" style={{ color: accent }}>
-          {String(mod.order).padStart(2, '0')}
-        </span>
         <div className="mc-text">
           <span className="mc-title">{mod.shortTitle ?? mod.title}</span>
           {mod.brief && <span className="mc-brief">{mod.brief}</span>}
         </div>
+        <span className="mc-no" style={{ color: accent }}>
+          {String(mod.order).padStart(2, '0')}
+        </span>
       </div>
     </div>
   )
