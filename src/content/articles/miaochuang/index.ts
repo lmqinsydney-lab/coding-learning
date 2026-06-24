@@ -94,6 +94,7 @@ export const miaochuang: Article = {
     /* ---------- 0 项目简介 ---------- */
     {
       id: 'intro',
+      originAnchor: '项目简介',
       title: '项目简介',
       order: 1,
       brief: '它是什么 · 谁来做',
@@ -118,6 +119,7 @@ export const miaochuang: Article = {
     /* ---------- 1 体验层 ---------- */
     {
       id: 'prototype',
+      originAnchor: '体验层',
       title: '体验层 · 手搓 HTML 原型',
       shortTitle: '体验层 · 原型',
       order: 2,
@@ -160,6 +162,7 @@ export const miaochuang: Article = {
     /* ---------- 2 功能层 ---------- */
     {
       id: 'auth',
+      originAnchor: '功能层',
       title: '功能层 · 登录与鉴权',
       shortTitle: '功能层 · 鉴权',
       order: 3,
@@ -244,6 +247,7 @@ export const miaochuang: Article = {
     /* ---------- 3 验证层 ---------- */
     {
       id: 'local-data',
+      originAnchor: '验证层',
       title: '验证层 · 数据本地化存储',
       shortTitle: '验证层 · 本地存储',
       order: 4,
@@ -287,6 +291,7 @@ export const miaochuang: Article = {
     /* ---------- 4 发布层 ---------- */
     {
       id: 'deploy',
+      originAnchor: '发布层',
       title: '发布层 · 部署到服务器',
       shortTitle: '发布层 · 部署',
       order: 5,
@@ -332,6 +337,7 @@ export const miaochuang: Article = {
     /* ---------- 5 数据层 ---------- */
     {
       id: 'backend',
+      originAnchor: '数据层',
       title: '数据层 · 联动后端，闭环上线',
       shortTitle: '数据层 · 后端',
       order: 6,
@@ -373,6 +379,7 @@ export const miaochuang: Article = {
     /* ---------- 6 写在最后 ---------- */
     {
       id: 'closing',
+      originAnchor: '写在最后',
       title: '写在最后',
       order: 7,
       brief: '设计与工程的边界正在模糊',

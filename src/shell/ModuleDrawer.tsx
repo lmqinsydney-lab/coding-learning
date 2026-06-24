@@ -17,12 +17,10 @@ export function ModuleDrawer({
   article,
   activeId,
   onClose,
-  onNavigate,
 }: {
   article: Article
   activeId: string | null
   onClose: () => void
-  onNavigate: (id: string) => void
 }) {
   const sorted = useMemo(
     () => [...article.contentModules].sort((a, b) => a.order - b.order),
@@ -70,9 +68,6 @@ export function ModuleDrawer({
 
   if (!open || !mod) return null
 
-  const prev = index > 0 ? sorted[index - 1] : null
-  const next = index < sorted.length - 1 ? sorted[index + 1] : null
-
   const jump = (type: string) => {
     const root = scrollRef.current
     const el = root?.querySelector<HTMLElement>(`#lens-${type}`)
@@ -92,14 +87,6 @@ export function ModuleDrawer({
           </button>
         </div>
         <h2 className="panel-title">{mod.title}</h2>
-        <div className="panel-nav">
-          <button className="foot-btn" disabled={!prev} onClick={() => prev && onNavigate(prev.id)}>
-            <Icon name="arrow-left" size={14} /> {prev ? prev.shortTitle ?? prev.title : '已是第一个'}
-          </button>
-          <button className="foot-btn" disabled={!next} onClick={() => next && onNavigate(next.id)}>
-            {next ? next.shortTitle ?? next.title : '已是最后一个'} <Icon name="arrow-right" size={14} />
-          </button>
-        </div>
         <AnchorNav lenses={mod.lenses} active={activeLens} onJump={jump} />
       </header>
 

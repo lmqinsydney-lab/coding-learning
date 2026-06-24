@@ -250,6 +250,41 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* 顶栏里的上/下模块切换（carousel 滑出后出现） */
+.bar-modnav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.bar-mod-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.5px solid var(--border);
+}
+.bar-mod-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-accent);
+}
+.bar-mod-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.bar-mod-cur {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .article-head {
   margin: 24px 0 28px;
 }

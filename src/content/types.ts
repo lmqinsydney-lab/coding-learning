@@ -42,6 +42,8 @@ export interface ContentModule {
   brief?: string
   /** 科技图主题；不填则按序号自动分配 */
   motif?: TechMotif
+  /** 对应原文里的标题文本（子串即可）；切到该模块时左侧原文滚到此处 */
+  originAnchor?: string
   lenses: Lens[]
 }
 

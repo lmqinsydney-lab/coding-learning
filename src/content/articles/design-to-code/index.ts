@@ -55,6 +55,7 @@ export const designToCode: Article = {
   contentModules: [
     {
       id: 'background',
+      originAnchor: '背景',
       title: '背景与目标',
       order: 1,
       brief: '从「看图写代码」到「读设计稿写代码」',
@@ -78,6 +79,7 @@ export const designToCode: Article = {
     },
     {
       id: 'concept',
+      originAnchor: '概念解释',
       title: '核心概念',
       order: 2,
       brief: 'MCP / Claude Code / Figma Make / DSL',
@@ -104,6 +106,7 @@ export const designToCode: Article = {
     },
     {
       id: 'paths',
+      originAnchor: '目标',
       title: '三条路径',
       order: 3,
       brief: 'Figma MCP / MasterGo MCP / Figma Make',
@@ -142,6 +145,7 @@ export const designToCode: Article = {
     },
     {
       id: 'results',
+      originAnchor: '方案实践',
       title: '实战还原度',
       order: 4,
       brief: 'C1 / C2 两个真实页面实测',
@@ -168,6 +172,7 @@ export const designToCode: Article = {
     },
     {
       id: 'steps',
+      originAnchor: '具体操作流程',
       title: '操作流程',
       order: 5,
       brief: '安装 → 复制链接 → 生成 → 预览',
