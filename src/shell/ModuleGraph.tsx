@@ -72,7 +72,7 @@ export function ModuleGraph({
 
   const cardW = Math.round(Math.min(272, Math.max(200, width * 0.36)))
   const step1 = cardW * 0.74 // ±1 卡：露出更多
-  const step2 = cardW * 0.32 // ±2 卡：只在 ±1 之外露一点
+  const step2 = cardW * 0.46 // ±2 卡：在 ±1 之外也多露一些
   const step = step1 // 点击横坐标→步数 的映射基准
 
   const styleFor = (i: number) => {
@@ -91,10 +91,10 @@ export function ModuleGraph({
       }
     }
     const tx = abs === 0 ? 0 : abs === 1 ? sign * step1 : sign * (step1 + step2)
-    const tz = abs === 0 ? 0 : abs === 1 ? -150 : -350
-    const ry = off === 0 ? 0 : -sign * (abs === 1 ? 36 : 50)
-    const scale = abs === 0 ? 1 : abs === 1 ? 0.9 : 0.72
-    const opacity = abs === 0 ? 1 : abs === 1 ? 1 : 0.38
+    const tz = abs === 0 ? 0 : abs === 1 ? -150 : -310
+    const ry = off === 0 ? 0 : -sign * (abs === 1 ? 36 : 46)
+    const scale = abs === 0 ? 1 : abs === 1 ? 0.9 : 0.76
+    const opacity = abs === 0 ? 1 : abs === 1 ? 1 : 0.52
     return {
       width: cardW,
       transform: `translate(-50%, -50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`,
