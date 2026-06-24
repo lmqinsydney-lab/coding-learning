@@ -21,6 +21,13 @@ import img17 from './assets/img17.webp'
 import img18 from './assets/img18.webp'
 import img19 from './assets/img19.webp'
 
+// 导读信息总结图（速创 GPT-Image-2 生成、本地化）
+import summaryBackground from './assets/summary-background.webp'
+import summaryConcept from './assets/summary-concept.webp'
+import summaryPaths from './assets/summary-paths.webp'
+import summaryResults from './assets/summary-results.webp'
+import summarySteps from './assets/summary-steps.webp'
+
 const assetMap: Record<string, string> = {
   'img01.webp': img01, 'img02.webp': img02, 'img03.webp': img03, 'img04.webp': img04,
   'img05.webp': img05, 'img06.webp': img06, 'img07.webp': img07, 'img08.webp': img08,
@@ -57,6 +64,7 @@ export const designToCode: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryBackground, alt: '背景与目标信息总结图' },
             { kind: 'p', text: '设计稿转代码长期是设计与开发之间的痛点：切图标注、写还原文档交付给开发，过程里信息损失、反复沟通、还原偏差。' },
             {
               kind: 'analogy',
@@ -79,6 +87,7 @@ export const designToCode: Article = {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
+            { kind: 'img', src: summaryConcept, alt: '核心概念信息总结图' },
             {
               kind: 'commands',
               intro: '点任一概念，看通俗解释：',
@@ -104,6 +113,7 @@ export const designToCode: Article = {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
+            { kind: 'img', src: summaryPaths, alt: '三条路径信息总结图' },
             {
               kind: 'commands',
               intro: '三条路径，点开看机制与取舍：',
@@ -141,6 +151,7 @@ export const designToCode: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryResults, alt: '实战还原度信息总结图' },
             { kind: 'p', text: '用两个真实页面（C1、C2 首页）实测三条路径的还原度，对比原稿（生成效果原图见下方原文）。' },
           ],
         },
@@ -166,6 +177,7 @@ export const designToCode: Article = {
           type: 'reference',
           title: '指令交互速查',
           blocks: [
+            { kind: 'img', src: summarySteps, alt: '操作流程信息总结图' },
             {
               kind: 'commands',
               intro: '关键命令，点开看用法：',
