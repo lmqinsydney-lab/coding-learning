@@ -82,12 +82,18 @@ export function ModuleDrawer({
     <aside className="module-panel" role="region" aria-label={mod.title}>
       <header className="panel-head">
         <div className="panel-head-row">
-          <div>
-            <div className="panel-kicker">模块详情 · {String(mod.order).padStart(2, '0')}</div>
-            <h2 className="panel-title">{mod.title}</h2>
-          </div>
+          <div className="panel-kicker">模块详情 · {String(mod.order).padStart(2, '0')}</div>
           <button className="icon-btn" aria-label="关闭" onClick={onClose}>
             <Icon name="x" size={18} />
+          </button>
+        </div>
+        <h2 className="panel-title">{mod.title}</h2>
+        <div className="panel-nav">
+          <button className="foot-btn" disabled={!prev} onClick={() => prev && onNavigate(prev.id)}>
+            <Icon name="arrow-left" size={14} /> {prev ? prev.shortTitle ?? prev.title : '已是第一个'}
+          </button>
+          <button className="foot-btn" disabled={!next} onClick={() => next && onNavigate(next.id)}>
+            {next ? next.shortTitle ?? next.title : '已是最后一个'} <Icon name="arrow-right" size={14} />
           </button>
         </div>
         <AnchorNav lenses={mod.lenses} active={activeLens} onJump={jump} />
@@ -109,15 +115,6 @@ export function ModuleDrawer({
           </section>
         ))}
       </div>
-
-      <footer className="panel-foot">
-        <button className="foot-btn" disabled={!prev} onClick={() => prev && onNavigate(prev.id)}>
-          <Icon name="arrow-left" size={14} /> {prev ? prev.title : '已是第一个'}
-        </button>
-        <button className="foot-btn" disabled={!next} onClick={() => next && onNavigate(next.id)}>
-          {next ? next.title : '已是最后一个'} <Icon name="arrow-right" size={14} />
-        </button>
-      </footer>
     </aside>
   )
 }

@@ -50,9 +50,6 @@ export function ArticlePage() {
       {/* 双栏：左原文随页滚动，右模块面板常驻、内部滚动 */}
       <div className={`article-split ${activeId ? 'has-panel' : ''}`}>
         <div className="origin-col">
-          <div className="origin-label">
-            <Icon name="file-text" size={14} /> 原文
-          </div>
           <article className="origin-body">
             {article.bodyMarkdown ? (
               <Markdown content={article.bodyMarkdown} assetMap={article.assetMap} />
