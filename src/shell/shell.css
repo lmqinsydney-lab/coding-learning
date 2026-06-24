@@ -324,7 +324,7 @@
   display: flex;
   justify-content: center;
   gap: 7px;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 .carousel-dot {
   width: 7px;
@@ -424,6 +424,9 @@
 }
 
 /* ---------- 双栏：原文 + 模块面板 ---------- */
+.article-split {
+  margin-top: 30px;
+}
 .article-split.has-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 416px);
