@@ -423,43 +423,46 @@
   padding: 22px;
 }
 
-/* ---------- Drawer ---------- */
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background: var(--bg-overlay);
-  backdrop-filter: blur(2px);
-  animation: fade-in 0.2s ease;
+/* ---------- 双栏：原文 + 模块面板 ---------- */
+.article-split.has-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 416px);
+  gap: 24px;
+  align-items: start;
 }
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 41;
-  height: 100vh;
-  width: min(var(--drawer-w), 92vw);
+.origin-col {
+  min-width: 0;
+}
+.module-col {
+  position: sticky;
+  top: 104px;
+  align-self: start;
+}
+.module-panel {
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - 124px);
+  overflow: hidden;
   background: var(--bg-elevated);
-  border-left: 0.5px solid var(--border-accent);
-  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
-  animation: drawer-in 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 0.5px solid var(--border-accent);
+  border-radius: var(--r-lg);
+  box-shadow: 0 12px 44px rgba(0, 0, 0, 0.36);
+  animation: fade-in 0.22s ease;
 }
-.drawer-head {
-  padding: 18px 20px 0;
+.panel-head {
+  padding: 16px 18px 0;
   border-bottom: 0.5px solid var(--border);
 }
-.drawer-head-row {
+.panel-head-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
-.drawer-kicker {
+.panel-kicker {
   font-size: var(--fs-xs);
   color: var(--text-tertiary);
 }
-.drawer-title {
+.panel-title {
   font-size: var(--fs-h2);
   margin-top: 3px;
 }
@@ -492,13 +495,13 @@
   background: var(--accent);
   color: #fff;
 }
-.drawer-body {
+.panel-body {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 24px;
 }
 .lens {
   scroll-margin-top: 12px;
@@ -510,10 +513,10 @@
   font-size: var(--fs-h3);
   margin-bottom: 12px;
 }
-.drawer-foot {
+.panel-foot {
   display: flex;
   gap: 10px;
-  padding: 14px 20px;
+  padding: 12px 18px;
   border-top: 0.5px solid var(--border);
 }
 .foot-btn {
@@ -536,4 +539,19 @@
 .foot-btn:disabled {
   opacity: 0.4;
   cursor: default;
+}
+/* 窄屏：面板不并排，叠在原文上方、内部滚动 */
+@media (max-width: 900px) {
+  .article-split.has-panel {
+    display: flex;
+    flex-direction: column;
+  }
+  .module-col {
+    position: static;
+    order: -1;
+    margin-bottom: 18px;
+  }
+  .module-panel {
+    max-height: 72vh;
+  }
 }

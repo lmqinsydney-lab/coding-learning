@@ -47,19 +47,27 @@ export function ArticlePage() {
       </div>
       <ModuleGraph modules={article.contentModules} onOpen={openModule} />
 
-      {/* 原文铺底 */}
-      <div className="origin-label">
-        <Icon name="file-text" size={14} /> 原文
-      </div>
-      <article className="origin-body">
-        {article.bodyMarkdown ? (
-          <Markdown content={article.bodyMarkdown} assetMap={article.assetMap} />
-        ) : (
-          <Blocks blocks={article.body} />
-        )}
-      </article>
+      {/* 双栏：左原文随页滚动，右模块面板常驻、内部滚动 */}
+      <div className={`article-split ${activeId ? 'has-panel' : ''}`}>
+        <div className="origin-col">
+          <div className="origin-label">
+            <Icon name="file-text" size={14} /> 原文
+          </div>
+          <article className="origin-body">
+            {article.bodyMarkdown ? (
+              <Markdown content={article.bodyMarkdown} assetMap={article.assetMap} />
+            ) : (
+              <Blocks blocks={article.body} />
+            )}
+          </article>
+        </div>
 
-      <ModuleDrawer article={article} activeId={activeId} onClose={closeDrawer} onNavigate={openModule} />
+        {activeId && (
+          <div className="module-col">
+            <ModuleDrawer article={article} activeId={activeId} onClose={closeDrawer} onNavigate={openModule} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }
