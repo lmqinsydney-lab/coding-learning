@@ -75,7 +75,11 @@ export function ModuleDrawer({
 
   const jump = (type: string) => {
     const root = scrollRef.current
-    root?.querySelector(`#lens-${type}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const el = root?.querySelector<HTMLElement>(`#lens-${type}`)
+    if (!root || !el) return
+    // 只滚动右面板内部容器，不波及整页（避免带动左侧原文）
+    const delta = el.getBoundingClientRect().top - root.getBoundingClientRect().top
+    root.scrollTo({ top: root.scrollTop + delta - 12, behavior: 'smooth' })
   }
 
   return (
