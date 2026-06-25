@@ -1,20 +1,24 @@
 import type { Article } from '../../types'
+import original from './original.md?raw'
 
-/** 基础知识 · Git 基础（面向设计师） */
+// 导读信息总结图（速创 GPT-Image-2 生成、本地化）
+import summaryWhatIsVcs from './assets/summary-what-is-vcs.webp'
+import summaryDailyOps from './assets/summary-daily-ops.webp'
+import summaryBranching from './assets/summary-branching.webp'
+
+/** 基础知识 · Git 基础（面向设计师，原文为自撰） */
 export const gitBasics: Article = {
   id: 'git-basics',
   title: '看懂 Git：版本控制入门',
   category: 'basics',
   summary: '从设计师视角理解版本控制：仓库、提交、分支与协作，配可点击的指令速查。',
   highlights: ['交互速查', '设计师类比', '分步实操'],
-  body: [
-    { kind: 'p', text: 'Git 是工程师管理代码版本的工具。对设计师来说，理解它能让你看懂 AI 在「部署/协作」时到底在做什么，也能更顺畅地和开发同学配合。' },
-    { kind: 'p', text: '点上方任一内容模块，进入该模块的结构化学习：会有概念图解、可点击的指令速查、以及避坑提醒。' },
-  ],
+  bodyMarkdown: original,
   contentModules: [
     {
       id: 'what-is-vcs',
       title: '什么是版本控制',
+      originAnchor: '什么是版本控制',
       order: 1,
       brief: '为什么需要、解决什么问题',
       motif: 'cube',
@@ -23,6 +27,7 @@ export const gitBasics: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryWhatIsVcs, alt: '什么是版本控制信息总结图' },
             { kind: 'p', text: '版本控制就是给文件的每次改动留一个可回溯的快照，随时能回到任意历史版本。' },
             {
               kind: 'analogy',
@@ -41,6 +46,7 @@ export const gitBasics: Article = {
     {
       id: 'daily-ops',
       title: '日常基础操作',
+      originAnchor: '日常基础操作',
       order: 2,
       brief: 'add / commit / push 的日常循环',
       motif: 'terminal',
@@ -49,6 +55,7 @@ export const gitBasics: Article = {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
+            { kind: 'img', src: summaryDailyOps, alt: 'Git 四个区域与日常操作信息总结图' },
             { kind: 'p', text: '工作区 → 暂存区 → 本地仓库 → 远程仓库，是 Git 的四个区域。' },
             {
               kind: 'steps',
@@ -78,6 +85,7 @@ export const gitBasics: Article = {
     {
       id: 'branching',
       title: '分支管理',
+      originAnchor: '分支：并行开发',
       order: 3,
       brief: '并行开发不打架',
       motif: 'branch',
@@ -86,6 +94,7 @@ export const gitBasics: Article = {
           type: 'intro',
           title: '导读',
           blocks: [
+            { kind: 'img', src: summaryBranching, alt: '分支管理信息总结图' },
             {
               kind: 'analogy',
               designSide: '复制一份设计稿做大改，不影响原稿',
