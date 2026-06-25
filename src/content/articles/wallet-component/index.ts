@@ -9,13 +9,13 @@ import summaryPromptTemplate from './assets/summary-prompt-template.webp'
 import summaryCase from './assets/summary-case.webp'
 
 /**
- * AI 学习类 · 源自 Cooper：《应用：高效率调用-滴滴钱包组件代码》
+ * 代码实践 · 源自 Cooper：《应用：高效率调用-滴滴钱包组件代码》
  * 设计稿→生产级代码的指令工作流规范。纯文字（含一个 .tsx 附件链接）。
  */
 export const walletComponent: Article = {
   id: 'wallet-component',
   title: '应用：把设计稿变成生产级组件代码（钱包实战）',
-  category: 'ai',
+  category: 'practice',
   summary:
     '滴滴钱包组件代码化的完整工作流：用 DESIGN.md 锁住规范、用四段式指令模板喂给 Claude Code，做到像素级还原 + 微动效，迭代周期对半砍。',
   highlights: ['四段式指令模板', 'DESIGN.md 规范', '像素级还原'],

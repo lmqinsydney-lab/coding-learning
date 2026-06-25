@@ -7,13 +7,13 @@ import summaryMinimax from './assets/summary-minimax.webp'
 import summaryObsidian from './assets/summary-obsidian.webp'
 
 /**
- * 代码类 · 源自 Cooper：《01-基础建设：Claude Code 本地部署接 minimax + Obsidian 全流程》
+ * 基础知识 · 源自 Cooper：《01-基础建设：Claude Code 本地部署接 minimax + Obsidian 全流程》
  * 纯命令型教程，无图。contentModules 把三段安装拆成可点的命令速查。
  */
 export const claudeCodeSetup: Article = {
   id: 'claude-code-setup',
   title: '基础建设①：本地装好 Claude Code（接 minimax + Obsidian）',
-  category: 'code',
+  category: 'basics',
   summary:
     '从零把 Claude Code 装到本地、接上 minimax 模型，再让 Obsidian 也能直接调用——后续所有 AI 工作流的地基。',
   highlights: ['命令速查', '接入 minimax', 'Obsidian 联动'],

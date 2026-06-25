@@ -1,6 +1,7 @@
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import '@fontsource/poppins/latin-700.css' // Poppins Bold（自托管，避免 Google Fonts 在国内被墙）
 import './theme/global.css'
 import './shell/shell.css'
 import { AppShell } from './shell/AppShell'
@@ -18,7 +19,8 @@ function ScrollToTop() {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    {/* HashRouter：GitHub Pages 等静态托管下，深链/刷新走 #/ 不会 404 */}
+    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ScrollToTop />
       <Routes>
         <Route element={<AppShell />}>
@@ -27,6 +29,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )

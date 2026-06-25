@@ -23,14 +23,14 @@ import summaryHabits from './assets/summary-habits.webp'
 import summaryValue from './assets/summary-value.webp'
 
 /**
- * AI 学习类 · 源自 Cooper：《独立开发 iOS 创新工作流》
+ * 代码实践 · 源自 Cooper：《独立开发 iOS 创新工作流》
  * bodyMarkdown = 原文（含工作流图、对比表、过程截图）。
  * contentModules = 提炼总结的学习层。
  */
 export const iosWorkflow: Article = {
   id: 'ios-workflow',
   title: '独立开发 iOS：三工具联动的 Vibe Coding 工作流',
-  category: 'ai',
+  category: 'practice',
   summary:
     'Obsidian（思考）→ Claude Code（执行）→ Xcode（验证）三者联动，让文档即开发日志、预览即验证，设计师也能独立做 iOS。',
   highlights: ['三工具联动', '文档驱动开发', 'Xcode 秒级预览'],

@@ -49,7 +49,7 @@ export function ArticlePage() {
 
       <div className="article-head">
         <span className={`card-cat cat-${article.category}`}>
-          <Icon name={article.category === 'code' ? 'code' : 'sparkles'} size={12} />{' '}
+          <Icon name={article.category === 'basics' ? 'book' : 'code'} size={12} />{' '}
           {CATEGORY_LABEL[article.category]}
         </span>
         <h1 id="article-title">{article.title}</h1>

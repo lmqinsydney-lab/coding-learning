@@ -37,14 +37,14 @@ const assetMap: Record<string, string> = {
 }
 
 /**
- * AI 学习类 · 源自 Cooper：《02 -【设计代码化】》
+ * 代码实践 · 源自 Cooper：《02 -【设计代码化】》
  * bodyMarkdown = 原文（含三路径对比表、还原度截图、步骤截图）。
  * contentModules = 提炼总结的学习层。
  */
 export const designToCode: Article = {
   id: 'design-to-code',
   title: '设计代码化：AI 把设计稿变成代码',
-  category: 'ai',
+  category: 'practice',
   summary:
     '设计稿转代码的最短最优路径：Figma / MasterGo 的 MCP + Claude Code 三条路径实测，还原度 >90%。',
   highlights: ['路径对比', '还原度 >90%', 'MCP 实操'],

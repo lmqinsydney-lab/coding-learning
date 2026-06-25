@@ -1,10 +1,10 @@
 import type { Article } from '../../types'
 
-/** 代码类 · Git 基础（面向设计师） */
+/** 基础知识 · Git 基础（面向设计师） */
 export const gitBasics: Article = {
   id: 'git-basics',
   title: '看懂 Git：版本控制入门',
-  category: 'code',
+  category: 'basics',
   summary: '从设计师视角理解版本控制：仓库、提交、分支与协作，配可点击的指令速查。',
   highlights: ['交互速查', '设计师类比', '分步实操'],
   body: [

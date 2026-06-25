@@ -9,8 +9,8 @@ type Filter = 'all' | Category
 
 const FILTERS: { key: Filter; label: string; icon?: string }[] = [
   { key: 'all', label: '全部' },
-  { key: 'code', label: '代码类', icon: 'code' },
-  { key: 'ai', label: 'AI 学习类', icon: 'sparkles' },
+  { key: 'basics', label: '基础知识', icon: 'book' },
+  { key: 'practice', label: '代码实践', icon: 'code' },
 ]
 
 export function CatalogPage() {
@@ -25,8 +25,8 @@ export function CatalogPage() {
       <section className="hero">
         <HeroBackground />
         <div className="hero-inner">
-          <h1 className="hero-title">把代码与 AI，拆成设计师看得懂的样子</h1>
-          <p className="hero-sub">每篇文章 = 一张可点击的信息图</p>
+          <h1 className="hero-title">Coding Learning</h1>
+          <p className="hero-sub">把代码与 AI，拆成设计师看得懂的样子</p>
           <button className="hero-cta" onClick={() => alert('上传 / 粘贴链接：敬请期待（二期）')}>
             <Icon name="upload" size={15} /> 上传文章 / 粘贴链接
           </button>
@@ -49,7 +49,7 @@ export function CatalogPage() {
         {list.map((a) => (
           <Link to={`/article/${a.id}`} key={a.id} className={`card cat-${a.category}`}>
             <div className="card-cat">
-              <Icon name={a.category === 'code' ? 'code' : 'sparkles'} size={12} />{' '}
+              <Icon name={a.category === 'basics' ? 'book' : 'code'} size={12} />{' '}
               {CATEGORY_LABEL[a.category]}
             </div>
             <div className="card-title">{a.title}</div>

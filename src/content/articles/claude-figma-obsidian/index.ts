@@ -8,13 +8,13 @@ import summaryAdvanced from './assets/summary-advanced.webp'
 import summaryEditors from './assets/summary-editors.webp'
 
 /**
- * AI 学习类 · 源自 Cooper：《02-基础建设：打通 Claude Code + Figma + Obsidian》
+ * 基础知识 · 源自 Cooper：《02-基础建设：打通 Claude Code + Figma + Obsidian》
  * 纯文字教程，无图。contentModules 把「接入 → 用法 → 进阶 → 选型」拆开。
  */
 export const claudeFigmaObsidian: Article = {
   id: 'claude-figma-obsidian',
   title: '基础建设②：一句话驱动 Figma 设计，并自动沉淀设计记忆',
-  category: 'ai',
+  category: 'basics',
   summary:
     '在 Obsidian 里接上 Claude Code + Figma MCP，用自然语言驱动 Figma 出设计，过程与结果自动写成「设计记忆文档」，打通想法→设计→记录的闭环。',
   highlights: ['一句指令出设计', 'Figma MCP', '设计记忆沉淀'],

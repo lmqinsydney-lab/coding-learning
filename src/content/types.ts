@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type Category = 'code' | 'ai'
+export type Category = 'basics' | 'practice'
 
 /** 解读视角：导读 / 核心概念图解 / 指令交互速查 / 避坑 */
 export type LensType = 'intro' | 'concept' | 'reference' | 'pitfall'
@@ -90,8 +90,8 @@ export interface Article {
 }
 
 export const CATEGORY_LABEL: Record<Category, string> = {
-  code: '代码类',
-  ai: 'AI 学习类',
+  basics: '基础知识',
+  practice: '代码实践',
 }
 
 export const LENS_LABEL: Record<LensType, string> = {

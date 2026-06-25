@@ -10,7 +10,7 @@ export function AppShell() {
             <Icon name="topology-star-3" size={18} style={{ color: 'var(--accent)' }} />
           </span>
           <span className="brand-name">Coding&nbsp;Learning</span>
-          <span className="brand-sub">设计师的代码 / AI 学习平台</span>
+          <span className="brand-sub">设计师的代码学习平台</span>
         </Link>
         <nav className="topnav">
           <span className="navlink active">学习</span>
