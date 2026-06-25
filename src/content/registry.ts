@@ -1,6 +1,7 @@
 import type { Article } from './types'
 import { miaochuang } from './articles/miaochuang'
 import { gitBasics } from './articles/git-basics'
+import { gitCommands } from './articles/git-commands'
 import { designToCode } from './articles/design-to-code'
 import { iosWorkflow } from './articles/ios-workflow'
 import { claudeCodeSetup } from './articles/claude-code-setup'
@@ -11,6 +12,7 @@ import { walletComponent } from './articles/wallet-component'
 export const articles: Article[] = [
   miaochuang,
   gitBasics,
+  gitCommands,
   designToCode,
   iosWorkflow,
   claudeCodeSetup,
