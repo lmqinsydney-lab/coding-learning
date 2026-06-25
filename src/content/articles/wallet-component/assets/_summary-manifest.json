@@ -1,0 +1,7 @@
+{
+  "background": "summary-background.webp",
+  "flow": "summary-flow.webp",
+  "design-md": "summary-design-md.webp",
+  "prompt-template": "summary-prompt-template.webp",
+  "case": "summary-case.webp"
+}

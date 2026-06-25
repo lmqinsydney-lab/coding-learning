@@ -1,0 +1,19 @@
+{
+  "slug": "claude-code-setup",
+  "size": "16:9",
+  "styleSuffix": "深色近黑背景(#0d0d12)，紫色(#6d5dfc)与青绿(#5fd0a8)霓虹辉光，线性图标，极简科技风。顶部居中放大号中文标题。中文文字务必清晰规范、排版整齐，无错字、乱码或变形。流程节点用圆圈+编号+箭头连接，节点下方放中文标签。干净留白、居中。",
+  "items": [
+    {
+      "moduleId": "install",
+      "prompt": "主题：本地部署 Claude Code。顶部标题「本地部署 Claude Code」。中部从左到右 3 个流程节点，编号①②③，标签依次「装 Node.js」「npm 全局安装」「claude --version 验证」，箭头连接。右上角终端图标。"
+    },
+    {
+      "moduleId": "minimax",
+      "prompt": "主题：接入 minimax 模型。顶部标题「接入 minimax 模型」。中部从左到右 5 个流程节点，编号①②③④⑤，标签依次「备份旧配置」「写 settings.json」「删多余 .claude.json」「校验 JSON」「重启测试」，箭头连接。底部小字「BASE_URL 指向 minimax」。"
+    },
+    {
+      "moduleId": "obsidian",
+      "prompt": "主题：Obsidian 接入。顶部标题「让 Obsidian 调用 Claude Code」。中部从左到右 3 个流程节点，编号①②③，标签依次「装 Obsidian」「BRAT 装 beta 插件」「侧边机器人调用」，箭头连接。右上角机器人线性图标。"
+    }
+  ]
+}
