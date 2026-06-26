@@ -9,7 +9,7 @@ type Filter = 'all' | Category
 
 const FILTERS: { key: Filter; label: string; icon?: string }[] = [
   { key: 'all', label: '全部' },
-  { key: 'basics', label: '基础知识', icon: 'book' },
+  { key: 'basics', label: '代码基础', icon: 'book' },
   { key: 'practice', label: '代码实践', icon: 'code' },
 ]
 

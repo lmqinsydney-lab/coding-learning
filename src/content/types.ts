@@ -90,7 +90,7 @@ export interface Article {
 }
 
 export const CATEGORY_LABEL: Record<Category, string> = {
-  basics: '基础知识',
+  basics: '代码基础',
   practice: '代码实践',
 }
 

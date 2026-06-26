@@ -47,7 +47,7 @@ export const designToCode: Article = {
   category: 'practice',
   summary:
     '设计稿转代码的最短最优路径：Figma / MasterGo 的 MCP + Claude Code 三条路径实测，还原度 >90%。',
-  highlights: ['路径对比', '还原度 >90%', 'MCP 实操'],
+  highlights: ['实操经验', 'Figma MCP', 'MasterGo MCP', 'Claude Code'],
 
   bodyMarkdown: original,
   assetMap,

@@ -7,7 +7,7 @@ export const gitCommands: Article = {
   title: 'Git 常用指令速查：从配置到后悔药',
   category: 'basics',
   summary: '日常真正会敲的 Git 命令，按场景分组：配置、提交、同步、分支、撤销，每条配设计师类比和易错点。',
-  highlights: ['指令速查', '按场景分组', '后悔药'],
+  highlights: ['基础知识', 'git指令'],
   bodyMarkdown: original,
   contentModules: [
     {

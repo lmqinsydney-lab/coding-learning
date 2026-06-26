@@ -33,7 +33,7 @@ export const iosWorkflow: Article = {
   category: 'practice',
   summary:
     'Obsidian（思考）→ Claude Code（执行）→ Xcode（验证）三者联动，让文档即开发日志、预览即验证，设计师也能独立做 iOS。',
-  highlights: ['三工具联动', '文档驱动开发', 'Xcode 秒级预览'],
+  highlights: ['实操经验', 'Obsidian', 'Claude Code', 'Xcode'],
 
   bodyMarkdown: original,
   assetMap,

@@ -18,7 +18,7 @@ export const walletComponent: Article = {
   category: 'practice',
   summary:
     '滴滴钱包组件代码化的完整工作流：用 DESIGN.md 锁住规范、用四段式指令模板喂给 Claude Code，做到像素级还原 + 微动效，迭代周期对半砍。',
-  highlights: ['四段式指令模板', 'DESIGN.md 规范', '像素级还原'],
+  highlights: ['Design.MD撰写', 'Claude Code'],
 
   bodyMarkdown: original,
 

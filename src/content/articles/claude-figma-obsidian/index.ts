@@ -17,7 +17,7 @@ export const claudeFigmaObsidian: Article = {
   category: 'basics',
   summary:
     '在 Obsidian 里接上 Claude Code + Figma MCP，用自然语言驱动 Figma 出设计，过程与结果自动写成「设计记忆文档」，打通想法→设计→记录的闭环。',
-  highlights: ['一句指令出设计', 'Figma MCP', '设计记忆沉淀'],
+  highlights: ['环境配置', 'Figma MCP'],
 
   bodyMarkdown: original,
 

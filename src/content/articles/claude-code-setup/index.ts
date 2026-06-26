@@ -16,7 +16,7 @@ export const claudeCodeSetup: Article = {
   category: 'basics',
   summary:
     '从零把 Claude Code 装到本地、接上 minimax 模型，再让 Obsidian 也能直接调用——后续所有 AI 工作流的地基。',
-  highlights: ['命令速查', '接入 minimax', 'Obsidian 联动'],
+  highlights: ['环境配置', 'Claude Code', 'minimax', 'Obsidian'],
 
   bodyMarkdown: original,
 

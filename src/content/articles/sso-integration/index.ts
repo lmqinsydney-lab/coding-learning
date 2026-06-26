@@ -12,7 +12,7 @@ export const ssoIntegration: Article = {
   category: 'basics',
   summary:
     '想让你做的工具也能用公司账号登录、识别身份与权限？完整流程 + 四个核心接口 + 服务端代码骨架 + 申请/配置 + 排查 FAQ，可照做（内网地址脱敏）。',
-  highlights: ['登录链路', '接口速查', '排查 FAQ'],
+  highlights: ['实操经验', '登录能力', 'SSO接入'],
   bodyMarkdown: original,
   contentModules: [
     {

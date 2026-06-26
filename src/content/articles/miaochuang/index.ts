@@ -83,7 +83,7 @@ export const miaochuang: Article = {
   category: 'practice',
   summary:
     '一名设计师花 3 周，把一个 AI 生成的 HTML 文件，部署成多人协作的生产后台。这是一份设计师迈向工程化的实战攻略。',
-  highlights: ['真实案例', 'URL 拆解', 'A/B 决策', '部署上线'],
+  highlights: ['实操经验', 'SSO', '数据库'],
 
   bodyMarkdown: original,
   assetMap,
