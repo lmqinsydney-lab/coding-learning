@@ -6,7 +6,6 @@ import imgStages from './assets/nEX5VtTs0qqSLDJB.webp'
 import imgSso from './assets/jELQ1CE5tkjbfUxg.webp'
 import imgStorage1 from './assets/sq5K5y6fWEWotPPO.webp'
 import imgStorage2 from './assets/vMeUgk2lTpRaNnD0.webp'
-import imgUrl from './assets/MLec2XMhgjP0nYyP.webp'
 import imgLoginFlow from './assets/JRLkxohAyMOLlcSf.webp'
 import imgUpmBadge from './assets/0BxmtGKdwOnRzIIu.webp'
 import imgApply from './assets/PNbN6lOR1MOlklOs.webp'
@@ -45,7 +44,6 @@ const assetMap: Record<string, string> = {
   'jELQ1CE5tkjbfUxg.webp': imgSso,
   'sq5K5y6fWEWotPPO.webp': imgStorage1,
   'vMeUgk2lTpRaNnD0.webp': imgStorage2,
-  'MLec2XMhgjP0nYyP.webp': imgUrl,
   'JRLkxohAyMOLlcSf.webp': imgLoginFlow,
   '0BxmtGKdwOnRzIIu.webp': imgUpmBadge,
   'PNbN6lOR1MOlklOs.webp': imgApply,
@@ -194,11 +192,11 @@ export const miaochuang: Article = {
             { kind: 'p', text: '登录调用链：用户点登录 → 跳到 SSO → 回调你的服务 → 你拿到用户身份。先看懂一个登录地址的结构（点下面每一段看含义）：' },
             {
               kind: 'commands',
-              intro: 'URL 拆解：me.xiaojukeji.com/.../login.html?redirect_uri=...&app_id=2103456',
+              intro: 'URL 拆解：<公司SSO登录页>/sso/login.html?redirect_uri=...&app_id=21xxxxx',
               items: [
                 { cmd: '协议 https', desc: '用什么方式通信，https 是加密的 http。', analogy: '相当于「走哪条路、加不加密」。' },
-                { cmd: '域名 Host', desc: 'me.xiaojukeji.com —— 服务在哪台机器上。', analogy: '像门牌地址，定位到哪栋楼。' },
-                { cmd: '路径 Path', desc: '/project/stargate-auth/html/login.html —— 具体哪个页面。', analogy: '楼里的哪个房间。' },
+                { cmd: '域名 Host', desc: '公司 SSO 登录页域名 —— 服务在哪台机器上。', analogy: '像门牌地址，定位到哪栋楼。' },
+                { cmd: '路径 Path', desc: '/sso/login.html —— 具体哪个页面。', analogy: '楼里的哪个房间。' },
                 { cmd: 'redirect_uri', desc: '登录成功后跳回哪里（你的回调地址）。', analogy: '办完事该把人送回的目的地。' },
                 { cmd: 'app_id', desc: '应用 ID，标识「是哪个系统在请求登录」。', analogy: '你这个系统的工牌号。' },
               ],

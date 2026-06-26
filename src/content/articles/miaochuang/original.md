@@ -119,10 +119,10 @@
 
 我们来分析一个完整的登录页地址：
 
-| [秒创登录地址](https://me.xiaojukeji.com/project/stargate-auth/html/login.html?redirect_uri=http%3A%2F%2Fmis.diditaxi.com.cn%2Fauth%2F%3Fjumpto%3D%252F%26app_id%3D2103456%26callback_index%3D0)： <br>[https://me.xiaojukeji.com/project/stargate-auth/html/login.html?redirect_uri=http%3A%2F%2Fmis.diditaxi.com.cn%2Fauth%2F%3Fjumpto%3D%252F%26app_id%3D2103456%26callback_index%3D0](https://me.xiaojukeji.com/project/stargate-auth/html/login.html?redirect_uri=http%3A%2F%2Fmis.diditaxi.com.cn%2Fauth%2F%3Fjumpto%3D%252F%26app_id%3D2103456%26callback_index%3D0)![](asset:MLec2XMhgjP0nYyP.webp) <br> |
+| 一个完整的登录地址（已脱敏示例，真实地址见公司内部 SSO 文档）： <br>`https://<公司SSO登录页>/sso/login.html?redirect_uri=<回调网关>%2Fauth%2F%3Fjumpto%3D%252F%26app_id%3D21xxxxx%26callback_index%3D0` <br> |
 | --- |
 | 协议 (Scheme) <br> | 域名 (Host) <br> | 文件路径 (Path) <br> | 登录成功后跳转目标地址 (URL) <br> |
-| https <br> | [http://me.xiaojukeji.com](http://me.xiaojukeji.com) <br> | /project/stargate-auth/html/login.html <br> | ?redirect_url=[http://mis.diditaxi.com.cn/auth/?jumpto=%2F&app_id=2103456&callback_index=0](http://mis.diditaxi.com.cn/auth/?jumpto=%2F&app_id=2103456&callback_index=0) <br>  <br>jumpto=/ <br>└── 登陆后要跳转到的页面（内部路径） <br>app_id=2103456 <br>└── 应用ID（标识调用方） <br>callback_index=0 <br>└── 回调索引（内部业务自定义） <br> |
+| https <br> | &lt;公司SSO登录页&gt; <br> | /sso/login.html <br> | ?redirect_uri=&lt;回调网关&gt;/auth/?jumpto=%2F&app_id=21xxxxx&callback_index=0 <br>  <br>jumpto=/ <br>└── 登陆后要跳转到的页面（内部路径） <br>app_id=21xxxxx <br>└── 应用ID（标识调用方） <br>callback_index=0 <br>└── 回调索引（内部业务自定义） <br> |
 
  
 
@@ -248,9 +248,9 @@ SSO会根据此地址跳转到子系统
 完成这个申请后，你的邮箱就会收到一封邮件，这样你就可以查看你的app_id和app_key啦！你可以登录[upm.xiaojukeji.com](http://upm.xiaojukeji.com/)(国内生产环境)，[upm-test.xiaojukeji.com](http://upm-test.xiaojukeji.com/)(测试环境)，点击系统管理员入口->系统管理→管理员管理。查看修改相关配置
 
 ```PlainText
-以[秒创]测试环境为例：
-app_id：2102353
-app_key:32位的一个字符串(6845****...)
+以测试环境为例：
+app_id：21xxxxx（7 位数字）
+app_key：32 位字符串（机密，切勿外发）
 ```
 
 ![](asset:JU3ntOOrfDE3f8nm.webp)
