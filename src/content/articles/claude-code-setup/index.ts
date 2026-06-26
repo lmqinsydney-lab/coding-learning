@@ -12,7 +12,7 @@ import summaryObsidian from './assets/summary-obsidian.webp'
  */
 export const claudeCodeSetup: Article = {
   id: 'claude-code-setup',
-  title: '基础建设①：本地装好 Claude Code（接 minimax + Obsidian）',
+  title: '【环境部署】Claude Code + Obsidian',
   category: 'basics',
   summary:
     '从零把 Claude Code 装到本地、接上 minimax 模型，再让 Obsidian 也能直接调用——后续所有 AI 工作流的地基。',

@@ -8,7 +8,7 @@ import original from './original.md?raw'
  */
 export const ssoIntegration: Article = {
   id: 'sso-integration',
-  title: '给自己的工具接入公司 SSO：从申请到本地跑通',
+  title: '【SSO登录】你的工具需不需要接SSO登录能力？',
   category: 'basics',
   summary:
     '想让你做的工具也能用公司账号登录、识别身份与权限？完整流程 + 四个核心接口 + 服务端代码骨架 + 申请/配置 + 排查 FAQ，可照做（内网地址脱敏）。',

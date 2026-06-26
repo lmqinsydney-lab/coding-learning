@@ -29,7 +29,7 @@ import summaryValue from './assets/summary-value.webp'
  */
 export const iosWorkflow: Article = {
   id: 'ios-workflow',
-  title: '独立开发 iOS：三工具联动的 Vibe Coding 工作流',
+  title: '【工作流探索】Claude Code + Obsidian + Xcode 联动 iOS 开发',
   category: 'practice',
   summary:
     'Obsidian（思考）→ Claude Code（执行）→ Xcode（验证）三者联动，让文档即开发日志、预览即验证，设计师也能独立做 iOS。',

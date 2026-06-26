@@ -13,7 +13,7 @@ import summaryEditors from './assets/summary-editors.webp'
  */
 export const claudeFigmaObsidian: Article = {
   id: 'claude-figma-obsidian',
-  title: '基础建设②：一句话驱动 Figma 设计，并自动沉淀设计记忆',
+  title: '【环境部署】Claude Code + Figma MCP',
   category: 'basics',
   summary:
     '在 Obsidian 里接上 Claude Code + Figma MCP，用自然语言驱动 Figma 出设计，过程与结果自动写成「设计记忆文档」，打通想法→设计→记录的闭环。',

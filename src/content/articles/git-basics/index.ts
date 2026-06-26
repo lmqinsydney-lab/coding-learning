@@ -9,7 +9,7 @@ import summaryBranching from './assets/summary-branching.webp'
 /** 基础知识 · Git 基础（面向设计师，原文为自撰） */
 export const gitBasics: Article = {
   id: 'git-basics',
-  title: '看懂 Git：版本控制入门',
+  title: 'Git基础知识【一】：版本控制入门',
   category: 'basics',
   summary: '从设计师视角理解版本控制：仓库、提交、分支与协作，配可点击的指令速查。',
   highlights: ['基础知识', 'git指令'],

@@ -79,7 +79,7 @@ const assetMap: Record<string, string> = {
  */
 export const miaochuang: Article = {
   id: 'miaochuang',
-  title: '设计师如何把【秒创】从 IDEA 到项目落地',
+  title: '【秒创】代码部署落地',
   category: 'practice',
   summary:
     '一名设计师花 3 周，把一个 AI 生成的 HTML 文件，部署成多人协作的生产后台。这是一份设计师迈向工程化的实战攻略。',
