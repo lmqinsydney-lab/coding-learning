@@ -3,15 +3,16 @@ import original from './original.md?raw'
 
 /**
  * 基础知识 · 给自己的工具接入公司 SSO（面向团队同学，原文为自撰）。
- * 素材源自《秒创》的「功能层·登录与鉴权」模块，抽成可复用的接入指南。
+ * 公开站脱敏版：保留完整流程/接口作用/代码骨架/排查，内网 IP 与真实 live 域名用占位符。
+ * 真实接口细节见公司内部《SSO 知多少》文档。
  */
 export const ssoIntegration: Article = {
   id: 'sso-integration',
   title: '给自己的工具接入公司 SSO：从申请到本地跑通',
   category: 'basics',
   summary:
-    '想让你做的工具也能用公司账号登录、识别身份与权限？把秒创接入 SSO 的过程整理成可复用步骤：决策、调用链、申请 app_id/key、配 .env、本地跑通。',
-  highlights: ['SSO 接入', 'app_id/app_key', '本地跑通'],
+    '想让你做的工具也能用公司账号登录、识别身份与权限？完整流程 + 四个核心接口 + 服务端代码骨架 + 申请/配置 + 排查 FAQ，可照做（内网地址脱敏）。',
+  highlights: ['登录链路', '接口速查', '排查 FAQ'],
   bodyMarkdown: original,
   contentModules: [
     {
@@ -40,41 +41,67 @@ export const ssoIntegration: Article = {
     },
     {
       id: 'login-flow',
-      title: '看懂登录调用链',
+      title: '登录链路与四个接口',
       shortTitle: '登录链路',
-      originAnchor: '看懂登录',
+      originAnchor: '登录这条链路怎么走',
       order: 2,
-      brief: '点登录 → 跳 SSO → 回调 → 拿身份',
+      brief: '点登录 → 跳 SSO → code 换 ticket → 拿身份',
       motif: 'api',
       lenses: [
         {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
-            { kind: 'p', text: '整条调用链一句话：用户点登录 → 跳到 SSO → 登录成功回调你的服务 → 你拿到用户身份。先看懂登录地址的结构（点每一段看含义）：' },
+            { kind: 'p', text: '一句话：未登录 → 服务端 302 跳 SSO → 登录成功带 code 回调 → 用 code 换 ticket → 用 ticket 拿用户 → 写 session。' },
             {
               kind: 'commands',
-              intro: 'URL 拆解：me.xiaojukeji.com/.../login.html?redirect_uri=...&app_id=21xxxxx',
+              intro: '四个核心接口（路径相对 {SSO_BASE_URL}），点开看作用：',
               items: [
-                { cmd: '协议 https', desc: '用什么方式通信，https 是加密的 http。', analogy: '走哪条路、加不加密。' },
-                { cmd: '域名 Host', desc: 'me.xiaojukeji.com —— SSO 服务在哪台机器上。', analogy: '门牌地址，定位到哪栋楼。' },
-                { cmd: '路径 Path', desc: '/project/stargate-auth/html/login.html —— 具体哪个登录页。', analogy: '楼里的哪个房间。' },
-                { cmd: 'redirect_uri', desc: '登录成功后跳回哪里（你的回调地址 /auth/callback）。', analogy: '办完事该把人送回的目的地。' },
-                { cmd: 'app_id', desc: '应用 ID，标识「是哪个系统在请求登录」。', analogy: '你这个工具的工牌号。' },
+                { cmd: 'GET /sso/login', desc: '跳转登录页。参数 app_id、jumpto(urlencode)、version=1.0。', analogy: '把没登录的人领到公司统一登录台。' },
+                { cmd: 'POST /sso/api/check_code', desc: '用回调拿到的 code 换 ticket。入参 app_id/app_key/code，返回 {ticket, username}。', pitfall: 'code 一次性、约 30s 失效，别重复用同一个。' },
+                { cmd: 'POST /sso/api/check_ticket', desc: '校验登录态是否仍有效。errno=0 即有效。', analogy: '每次进门刷一下工牌还有效没。' },
+                { cmd: 'POST /sso/api/check_user_ticket', desc: '用 ticket 取用户信息：username / username_zh / email / uid。', pitfall: '唯一标识用 username，不要用 uid。' },
+                { cmd: 'GET /ldap/logout', desc: '统一退出。先清自己的 session 再 302 到这里。' },
               ],
             },
           ],
         },
         {
-          type: 'intro',
-          title: '导读',
+          type: 'pitfall',
+          title: '避坑',
           blocks: [
-            { kind: 'p', text: '接入前建议先补几个概念，不懂就把脱敏后的文档丢给 AI 用大白话讲：' },
+            { kind: 'p', text: 'jumpto 四个最容易踩的坑：' },
             { kind: 'list', items: [
-              '接口是什么、由什么构成、怎么调用',
-              'cookie / session / localStorage 的区别（登录态存在哪）',
-              '公司 SSO 的那几个接口分别干什么',
+              '不带 jumpto，SSO 回调会默认带 jumpto=index，你要据此跳自己主页',
+              '真正的回调地址是 UPM 里配置的那个，不是 jumpto；jumpto 只是登录后透传、由你决定跳哪',
+              '推荐用法：未登录访问了 A 页 → 把 A 页塞进 jumpto → 登录完跳回 A 页',
+              '回调地址不能带 ?（会被截断），jumpto 不能带 #；非要带就多 encode/decode 几次',
             ] },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'impl',
+      title: '服务端怎么实现',
+      shortTitle: '服务端实现',
+      originAnchor: '服务端怎么实现',
+      order: 3,
+      brief: '中间件 → 302 → 回调换 ticket → session',
+      motif: 'terminal',
+      lenses: [
+        {
+          type: 'reference',
+          title: '指令交互速查',
+          blocks: [
+            { kind: 'p', text: '任何语言同理，核心四步（详见下方原文里的 Express 伪代码）：' },
+            { kind: 'steps', items: [
+              '登录态中间件：受保护路由先校验 session 里的 ticket（check_ticket）',
+              '无 ticket / 失效 → 服务端 302 跳到 /sso/login，带上 app_id 和 jumpto',
+              '/auth/callback 收到 code → check_code 换 ticket → 存进服务端 session',
+              '退出：清 session → 302 到 /ldap/logout',
+            ] },
+            { kind: 'callout', tone: 'warn', text: '铁律：登录态必须服务端校验、由服务端发起跳转；ticket 不在前端明文出现、不跨系统传输。' },
           ],
         },
       ],
@@ -84,7 +111,7 @@ export const ssoIntegration: Article = {
       title: '申请 app_id / app_key',
       shortTitle: '申请工牌',
       originAnchor: '申请 app_id',
-      order: 3,
+      order: 4,
       brief: 'UPM 发放、BPM 提单',
       motif: 'auth',
       lenses: [
@@ -92,7 +119,7 @@ export const ssoIntegration: Article = {
           type: 'concept',
           title: '核心概念图解',
           blocks: [
-            { kind: 'p', text: 'app_id / app_key 是你工具在公司系统里的「工牌」——有它公司才认识你的系统，你才能拿到员工身份。由 UPM（用户权限管理系统）发放。' },
+            { kind: 'p', text: 'app_id / app_key 是你工具在公司系统里的「工牌」——有它公司才认识你的系统。由 UPM（用户权限管理系统）发放。' },
             {
               kind: 'analogy',
               designSide: '进公司大楼要先办一张工牌',
@@ -108,12 +135,11 @@ export const ssoIntegration: Article = {
             {
               kind: 'steps',
               items: [
-                '子系统名称：填你的工具名',
-                '回调地址：后端给的 IP + /auth/callback（本地 http://localhost:8000/auth/callback）',
+                '子系统名称：你的工具名',
+                '回调地址：后端给的地址 + /auth/callback（本地 http://localhost:8000/auth/callback）',
                 '主页地址：你的工具首页（本地 http://localhost:8000）',
                 '管理员账号前缀：邮箱前缀，逗号隔开（线上不能填外包/实习）',
-                '系统所属环境：建议测试、线上各申请一套',
-                '通过后邮箱收到 app_id/app_key；可在 upm.xiaojukeji.com / upm-test.xiaojukeji.com 查看修改',
+                '系统所属环境：测试、线上各申请一套（两套环境完全独立）',
               ],
             },
           ],
@@ -122,8 +148,7 @@ export const ssoIntegration: Article = {
           type: 'pitfall',
           title: '避坑',
           blocks: [
-            { kind: 'callout', tone: 'warn', text: 'app_key 绝不要发给任何人或 AI，否则平台可能被任何人入侵！' },
-            { kind: 'callout', tone: 'info', text: '建议申请两套：一套本地测试、一套线上正式。' },
+            { kind: 'callout', tone: 'warn', text: 'app_key 绝不外发给任何人或 AI，否则平台可能被任何人入侵！' },
           ],
         },
       ],
@@ -133,7 +158,7 @@ export const ssoIntegration: Article = {
       title: '配置 .env',
       shortTitle: '.env 配置',
       originAnchor: '配置 .env',
-      order: 4,
+      order: 5,
       brief: '核对 5 个关键值',
       motif: 'storage',
       lenses: [
@@ -141,14 +166,14 @@ export const ssoIntegration: Article = {
           type: 'reference',
           title: '指令交互速查',
           blocks: [
-            { kind: 'p', text: 'AI 生成的项目里会带一个 .env（隐藏文件，macOS 按 ⌘+⇧+. 显示）。核对这 5 个值：' },
+            { kind: 'p', text: 'AI 生成的项目里会带 .env（隐藏文件，macOS 按 ⌘+⇧+. 显示）。核对这 5 个值：' },
             {
               kind: 'commands',
               intro: '点开看每个值填什么：',
               items: [
                 { cmd: 'SSO_APP_ID', desc: '从 UPM 拿到的 app_id。' },
                 { cmd: 'SSO_APP_KEY', desc: '从 UPM 拿到的 app_key。', pitfall: '机密，绝不外发。' },
-                { cmd: 'SSO_BASE_URL', desc: '公司 SSO 地址，一般不用改。' },
+                { cmd: 'SSO_BASE_URL', desc: '公司 SSO 地址，按环境填（真实值查内部文档）。' },
                 { cmd: 'APP_BASE_URL', desc: '你的服务地址，本地默认 http://localhost:8000。' },
                 { cmd: 'openssl rand -base64 32', desc: '生成 SESSION_SECRET（会话密钥），把输出填进 .env。', analogy: '给系统配一把随机的「保险箱钥匙」。' },
               ],
@@ -162,33 +187,46 @@ export const ssoIntegration: Article = {
       title: '本地跑通登录',
       shortTitle: '本地跑通',
       originAnchor: '本地跑通',
-      order: 5,
+      order: 6,
       brief: '让 AI 起服务，看到公司登录页即成功',
-      motif: 'terminal',
+      motif: 'prototype',
       lenses: [
         {
           type: 'reference',
           title: '指令交互速查',
           blocks: [
-            { kind: 'p', text: '把代码放在全英文路径下，在 IDE 终端启动服务——有 AI 可以「逃课」：' },
+            { kind: 'p', text: '把代码放全英文路径下，在 IDE 终端启动服务——有 AI 可以「逃课」：' },
             {
               kind: 'steps',
               items: [
                 '在 IDE 终端输入 claude 启动，说「帮我在本地运行服务」',
-                '终端显示服务已启动、监听 8000 端口',
-                '浏览器打开 http://localhost:8000，自动跳转到公司 SSO 登录页',
+                '终端显示服务已启动、监听端口',
+                '浏览器打开本地地址，自动跳转到公司 SSO 登录页',
                 '登录后跳回你的工具，并能拿到当前用户身份 —— 跑通',
               ],
             },
           ],
         },
+      ],
+    },
+    {
+      id: 'troubleshoot',
+      title: '常见问题排查',
+      shortTitle: '排查 FAQ',
+      originAnchor: '常见问题排查',
+      order: 7,
+      brief: '超时 / 环境隔离 / 重定向过多',
+      motif: 'branch',
+      lenses: [
         {
           type: 'pitfall',
           title: '避坑',
           blocks: [
-            { kind: 'callout', tone: 'warn', text: '连公司内网登录时别开 VPN，只连公司内网才行。' },
-            { kind: 'callout', tone: 'warn', text: '代码存放路径全英文，不要出现中文。' },
-            { kind: 'callout', tone: 'info', text: '调试三板斧：无痕模式清缓存、F12 看「网络/控制台」、把截图+完整报错一起给 AI。' },
+            { kind: 'callout', tone: 'info', text: '请求超时 → 环境没对应：线上接线上 SSO、测试接测试，别混用。' },
+            { kind: 'callout', tone: 'info', text: '线下通过、线上 check_code/check_ticket 失败 → 线上服务器需开通访问 SSO 的网络权限（找 OP），或改用内网直连地址。' },
+            { kind: 'callout', tone: 'info', text: '线上 check_code 失败 → 线上线下环境独立、要各申请一套 app_id/key；code 一次性，反复用同一个会失败。' },
+            { kind: 'callout', tone: 'info', text: '连无线网/代理无法访问、要验证码 → 被识别成外网，关掉 VPN/代理（含浏览器自带云加速）。' },
+            { kind: 'callout', tone: 'warn', text: '登录后浏览器重定向过多 → 用了错误的 ticket：①线上线下 cookie 混用（清缓存）②set cookie 失败（内容过长）③cookie 被 set 到全局域名取到别系统的 ticket。' },
           ],
         },
       ],
