@@ -216,6 +216,24 @@
   border-radius: 6px;
 }
 
+/* 卡片标签：第一个 = 主题标签（用分类色强调），其余 = 中性 */
+.card-tags .tag {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent; /* 占位，保证与第一个标签等高 */
+}
+.card-tags .tag:first-child {
+  color: var(--cat-code);
+  background: rgba(109, 93, 252, 0.14);
+  border-color: rgba(109, 93, 252, 0.4);
+  font-weight: 600;
+}
+.cat-basics .card-tags .tag:first-child {
+  color: var(--cat-ai);
+  background: rgba(95, 208, 168, 0.13);
+  border-color: rgba(95, 208, 168, 0.4);
+}
+
 /* ---------- Article page ---------- */
 .article-wrap {
   padding-top: 0;
