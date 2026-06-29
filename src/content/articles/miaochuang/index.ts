@@ -79,6 +79,7 @@ const assetMap: Record<string, string> = {
  */
 export const miaochuang: Article = {
   id: 'miaochuang',
+  createdAt: '2026-06-15T16:41:00',
   title: '【秒创】代码部署落地',
   category: 'practice',
   summary:

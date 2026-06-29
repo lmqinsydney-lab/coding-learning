@@ -29,6 +29,7 @@ import summaryValue from './assets/summary-value.webp'
  */
 export const iosWorkflow: Article = {
   id: 'ios-workflow',
+  createdAt: '2026-06-25T14:03:00',
   title: '【工作流探索】Claude Code + Obsidian + Xcode 联动 iOS 开发',
   category: 'practice',
   summary:

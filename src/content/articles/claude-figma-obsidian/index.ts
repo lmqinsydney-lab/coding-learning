@@ -13,6 +13,7 @@ import summaryEditors from './assets/summary-editors.webp'
  */
 export const claudeFigmaObsidian: Article = {
   id: 'claude-figma-obsidian',
+  createdAt: '2026-06-25T14:03:00',
   title: '【环境部署】Claude Code + Figma MCP',
   category: 'basics',
   summary:

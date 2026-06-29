@@ -15,10 +15,10 @@ const FILTERS: { key: Filter; label: string; icon?: string }[] = [
 
 export function CatalogPage() {
   const [filter, setFilter] = useState<Filter>('all')
-  const list = useMemo(
-    () => (filter === 'all' ? articles : articles.filter((a) => a.category === filter)),
-    [filter],
-  )
+  const list = useMemo(() => {
+    const sorted = [...articles].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)) // 创建时间倒序
+    return filter === 'all' ? sorted : sorted.filter((a) => a.category === filter)
+  }, [filter])
 
   return (
     <div>
@@ -56,7 +56,7 @@ export function CatalogPage() {
             <div className="card-summary">{a.summary}</div>
             <div className="card-meta">
               <span className="card-count">
-                <Icon name="layout-grid" size={12} /> {a.contentModules.length} 个内容模块
+                <Icon name="calendar" size={12} /> {a.createdAt.slice(0, 10)}
               </span>
             </div>
             {a.highlights?.length ? (

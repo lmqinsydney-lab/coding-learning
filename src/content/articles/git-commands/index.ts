@@ -4,6 +4,7 @@ import original from './original.md?raw'
 /** 基础知识 · Git 常用指令速查（面向设计师，原文为自撰）。承接《看懂 Git：版本控制入门》的动手版。 */
 export const gitCommands: Article = {
   id: 'git-commands',
+  createdAt: '2026-06-25T19:30:00',
   title: 'Git基础知识【二】：常用指令速查',
   category: 'basics',
   summary: '日常真正会敲的 Git 命令，按场景分组：配置、提交、同步、分支、撤销，每条配设计师类比和易错点。',

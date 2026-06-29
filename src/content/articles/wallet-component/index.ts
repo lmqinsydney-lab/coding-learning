@@ -14,6 +14,7 @@ import summaryCase from './assets/summary-case.webp'
  */
 export const walletComponent: Article = {
   id: 'wallet-component',
+  createdAt: '2026-06-25T14:03:00',
   title: '【滴滴钱包】代码化项目工作流',
   category: 'practice',
   summary:

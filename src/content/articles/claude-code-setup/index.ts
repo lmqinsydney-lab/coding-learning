@@ -12,6 +12,7 @@ import summaryObsidian from './assets/summary-obsidian.webp'
  */
 export const claudeCodeSetup: Article = {
   id: 'claude-code-setup',
+  createdAt: '2026-06-25T14:03:00',
   title: '【环境部署】Claude Code + Obsidian',
   category: 'basics',
   summary:

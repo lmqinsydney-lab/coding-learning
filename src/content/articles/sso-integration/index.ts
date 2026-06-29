@@ -8,6 +8,7 @@ import original from './original.md?raw'
  */
 export const ssoIntegration: Article = {
   id: 'sso-integration',
+  createdAt: '2026-06-25T19:40:00',
   title: '【SSO登录】你的工具需不需要接SSO登录能力？',
   category: 'basics',
   summary:

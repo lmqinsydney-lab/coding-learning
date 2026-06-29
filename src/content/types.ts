@@ -78,6 +78,8 @@ export interface Article {
   title: string
   category: Category
   summary: string
+  /** 创建时间（ISO 字符串，如 '2026-06-25T14:03:00'）；卡片展示日期并据此倒序排列 */
+  createdAt: string
   /** 交互亮点标签，显示在目录卡片上 */
   highlights?: string[]
   /** 原文（铺在总览页大纲下方）。两种写法二选一： */

@@ -43,6 +43,7 @@ const assetMap: Record<string, string> = {
  */
 export const designToCode: Article = {
   id: 'design-to-code',
+  createdAt: '2026-06-18T10:23:00',
   title: '设计代码化：AI 把设计稿变成代码',
   category: 'practice',
   summary:
