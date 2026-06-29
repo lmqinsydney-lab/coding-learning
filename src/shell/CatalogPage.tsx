@@ -13,6 +13,20 @@ const FILTERS: { key: Filter; label: string; icon?: string }[] = [
   { key: 'practice', label: '代码实践', icon: 'code' },
 ]
 
+/** 创建时间展示：今天 HH:MM / 昨天 HH:MM / YYYY-MM-DD HH:MM（按访问者本地时间判断） */
+function formatCreatedAt(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  const p = (n: number) => String(n).padStart(2, '0')
+  const time = `${p(d.getHours())}:${p(d.getMinutes())}`
+  const now = new Date()
+  const dayStart = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime()
+  const diff = Math.round((dayStart(now) - dayStart(d)) / 86400000)
+  if (diff === 0) return `今天 ${time}`
+  if (diff === 1) return `昨天 ${time}`
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${time}`
+}
+
 export function CatalogPage() {
   const [filter, setFilter] = useState<Filter>('all')
   const list = useMemo(() => {
@@ -56,7 +70,7 @@ export function CatalogPage() {
             <div className="card-summary">{a.summary}</div>
             <div className="card-meta">
               <span className="card-count">
-                <Icon name="calendar" size={12} /> {a.createdAt.slice(0, 10)}
+                <Icon name="calendar" size={12} /> {formatCreatedAt(a.createdAt)}
               </span>
             </div>
             {a.highlights?.length ? (
