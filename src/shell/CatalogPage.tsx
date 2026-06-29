@@ -25,7 +25,7 @@ export function CatalogPage() {
       <section className="hero">
         <HeroBackground />
         <div className="hero-inner">
-          <h1 className="hero-title">Coding Learning</h1>
+          <h1 className="hero-title">Code Learning</h1>
           <p className="hero-sub">把代码与 AI，拆成设计师看得懂的样子</p>
           <button className="hero-cta" onClick={() => alert('上传 / 粘贴链接：敬请期待（二期）')}>
             <Icon name="upload" size={15} /> 上传文章 / 粘贴链接
